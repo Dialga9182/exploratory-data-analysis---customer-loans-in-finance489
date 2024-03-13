@@ -22,19 +22,20 @@ class RDSDatabaseConnector:
     def initialise_engine(self):
         self.engine = create_engine(f"postgresql+psycopg2://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}")
         inspector = inspect(self.engine)
-        inspector.get_table_names()
+        table_names = inspector.get_table_names()
+        return table_names
 
     def extract_data(self):
         
 
         pass
     pass
-'''
-engine = create_engine(f"postgresql+psycopg2://{credentials['RDS_USER']}:{credentials['RDS_PASSWORD']}@{credentials['RDS_HOST']}:{credentials['RDS_PORT']}/{credentials['RDS_DATABASE']}")
-inspector = inspect(engine)
-table_names = inspector.get_table_names()
-print(table_names)
-'''
+###
+RDS = RDSDatabaseConnector()
+e = RDS.initialise_engine()
+print(e)
+###
+
 '''
 with engine.connect() as connection:
     result = connection.execute(text("SELECT * FROM loan_payments LIMIT 10"))
