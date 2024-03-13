@@ -20,17 +20,25 @@ class RDSDatabaseConnector:
         self.port = credentials['RDS_PORT']
     
     def initialise_engine(self):
-        self.engine = create_engine(f"postgresql+psycopg2://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}")
-        inspector = inspect(self.engine)
+        engine = create_engine(f"postgresql+psycopg2://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}")
+        inspector = inspect(engine)
         table_names = inspector.get_table_names()
-        return table_names
+        return engine
 
     def extract_data(self):
         print('string')
-        with self.engine.connect() as connection:
-            result = connection.execute(text("SELECT * FROM loan_payments LIMIT 10"))
-            for row in result:
-                print(row)
+        engine = self.initialise_engine()
+        en = engine.connect()
+        loan_payments = pd.read_sql_table('loan_payments', en)
+        df = pd.DataFrame(loan_payments)
+        #print(df)
+        return df
+    
+    def save_dataframe_as_csv(self):
+        my_data_frame = self.extract_data()
+        my_data_frame.to_csv('data.csv', index=False)
+
+        
 
 ###
 RDS = RDSDatabaseConnector()
@@ -41,4 +49,9 @@ print(e)
 ###
 d = RDS.extract_data()
 print(d)
+###
+
+###
+f = RDS.save_dataframe_as_csv()
+print(f)
 ###
