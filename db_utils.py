@@ -26,19 +26,19 @@ class RDSDatabaseConnector:
         return table_names
 
     def extract_data(self):
-        
+        print('string')
+        with self.engine.connect() as connection:
+            result = connection.execute(text("SELECT * FROM loan_payments LIMIT 10"))
+            for row in result:
+                print(row)
 
-        pass
-    pass
 ###
 RDS = RDSDatabaseConnector()
 e = RDS.initialise_engine()
 print(e)
 ###
 
-'''
-with engine.connect() as connection:
-    result = connection.execute(text("SELECT * FROM loan_payments LIMIT 10"))
-    for row in result:
-        print(row)
-'''
+###
+d = RDS.extract_data()
+print(d)
+###
