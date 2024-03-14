@@ -21,8 +21,8 @@ class RDSDatabaseConnector:
     
     def initialise_engine(self):
         engine = create_engine(f"postgresql+psycopg2://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}")
-        inspector = inspect(engine)
-        table_names = inspector.get_table_names()
+        #inspector = inspect(engine)
+        #table_names = inspector.get_table_names()
         return engine
 
     def extract_data(self):
@@ -37,21 +37,32 @@ class RDSDatabaseConnector:
     def save_dataframe_as_csv(self):
         my_data_frame = self.extract_data()
         my_data_frame.to_csv('data.csv', index=False)
+    
+    def load_into_pd_dataframe(self):
+        dataframe = pd.read_csv('data.csv')
+        print(dataframe.describe())
+        print(dataframe.shape)
+        pass
 
         
 
 ###
 RDS = RDSDatabaseConnector()
-e = RDS.initialise_engine()
-print(e)
+#e = RDS.initialise_engine()
+#print(e)
 ###
 
 ###
-d = RDS.extract_data()
-print(d)
+#d = RDS.extract_data()
+#print(d)
 ###
 
 ###
-f = RDS.save_dataframe_as_csv()
-print(f)
+#f = RDS.save_dataframe_as_csv()
+#print(f)
+###
+
+###
+g = RDS.load_into_pd_dataframe()
+print(g)
 ###
