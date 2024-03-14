@@ -1,15 +1,12 @@
-import psycopg2 as ps
 import yaml
 from sqlalchemy import create_engine
 import pandas as pd
-from sqlalchemy import inspect
-from sqlalchemy import text
 
 def function_to_load_credentials():
     with open("credentials.yaml", "r") as f:
         credentials = yaml.safe_load(f)
     return credentials
-credentials = function_to_load_credentials() # to be passed to RDSDatabaseConnector
+credentials = function_to_load_credentials()
 
 class RDSDatabaseConnector:
     def __init__(self, credentials = credentials):
@@ -19,50 +16,24 @@ class RDSDatabaseConnector:
         self.database = credentials['RDS_DATABASE']
         self.port = credentials['RDS_PORT']
     
-    def initialise_engine(self):
+    def initialise_engine_and_extract_data(self):
         engine = create_engine(f"postgresql+psycopg2://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}")
-        #inspector = inspect(engine)
-        #table_names = inspector.get_table_names()
-        return engine
-
-    def extract_data(self):
-        print('string')
-        engine = self.initialise_engine()
-        en = engine.connect()
-        loan_payments = pd.read_sql_table('loan_payments', en)
+        encon = engine.connect()
+        loan_payments = pd.read_sql_table('loan_payments', encon)
         df = pd.DataFrame(loan_payments)
-        #print(df)
         return df
     
-    def save_dataframe_as_csv(self):
-        my_data_frame = self.extract_data()
+    def save_dataframe_to_csv(self):
+        my_data_frame = self.initialise_engine_and_extract_data()
         my_data_frame.to_csv('data.csv', index=False)
     
-    def load_into_pd_dataframe(self):
-        dataframe = pd.read_csv('data.csv')
-        print(dataframe.describe())
-        print(dataframe.shape)
-        pass
+    def load_dataframe_from_csv(self):
+        df = pd.read_csv('data.csv')
+        print(df.shape)
 
-        
-
-###
-RDS = RDSDatabaseConnector()
-#e = RDS.initialise_engine()
-#print(e)
-###
-
-###
-#d = RDS.extract_data()
-#print(d)
-###
-
-###
-#f = RDS.save_dataframe_as_csv()
-#print(f)
-###
-
-###
-g = RDS.load_into_pd_dataframe()
-print(g)
-###
+if __name__=='__main__':
+    RDS = RDSDatabaseConnector()
+    a = RDS.initialise_engine_and_extract_data()
+    b = RDS.save_dataframe_to_csv()
+    c = RDS.load_dataframe_from_csv()
+    
