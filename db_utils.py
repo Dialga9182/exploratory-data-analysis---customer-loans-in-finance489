@@ -165,19 +165,38 @@ class DataTransform:
         
         
         pass
-    def numerical_to_boolean():
+    def numerical_to_boolean(self):
         '''
         Goes from a numerical to a boolean pandas type
         '''
+        #TODO: Find a way to convert columns from numerical to boolean, i.e., int or float to bool
+        # df['col'] = df['col'].astype('bool')
+        #TODO: Find some columns where this might be useful.
+        # 'policy_code' perhaps, although I will have to check if there
+        # are other policy codes other than '1' as if there are others that aren't 1 or 0 then
+        # it would likely be better as a category anyway
         
+        #seeing as though there is only one policy code, i.e., '1'
+        #there is no need to convert any of the columns to boolean
+        #as this was the only column I thought might even need
+        #converting to begin with...
         pass
-    def categorical_to_boolean():
+    def categorical_to_boolean(self):
+        # df['col'] = df['col'].astype('bool')
         pass
-    def int_to_float():
+    def int_to_float(self):
+        # df['col'] = df['col'].astype('float')
         pass
-    def float_to_int():
+    def float_to_int(self):
+        # df['col'] = df['col'].astype('int')
         pass
-    def convert_dates_to_proper_format():
+    def convert_dates_to_proper_format(self):
+        #TODO: Figure out what the 'proper' format is.
+        self.df['issue_date'] = pd.to_datetime(self.df['issue_date'])
+        self.df['earliest_credit_line'] = pd.to_datetime(self.df['earliest_credit_line'])
+        self.df['last_payment_date'] = pd.to_datetime(self.df['last_payment_date'])
+        self.df['next_payment_date'] = pd.to_datetime(self.df['next_payment_date'])
+        self.df['last_credit_pull_date'] = pd.to_datetime(self.df['last_credit_pull_date'])
         pass
     def method8():
         pass
