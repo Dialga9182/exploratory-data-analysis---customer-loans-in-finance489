@@ -207,17 +207,24 @@ class DataTransform:
     
 class DataFrameInfo:
     '''DOCSTRING'''
-    def __init__(self):
+    def __init__(self, df2):
+        self.df2 = df2
         pass
-    def method1_describe_all_columns_to_check_their_datatypes():
+    def method1_describe_all_columns_to_check_their_datatypes(self):
+        print(self.df2.dtypes)
         pass
-    def method2_extract_statistical_values_median_stddev_mean_from_cols_and_dataframe():
+    def method2_extract_statistical_values_median_stddev_mean_from_cols_and_dataframe(self):
+        print(self.df2.describe()) # gives everything but the median.
+        print(self.df2.median(numeric_only=True))
         pass
-    def method3_count_distinct_values_in_categorical_columns():
+    def method3_count_distinct_values_in_categorical_columns(self):
+        print(self.df2.nunique())
         pass
-    def method4_print_out_the_shape_of_the_dataframe():
+    def method4_print_out_the_shape_of_the_dataframe(self):
+        print(self.df2.shape)
         pass
-    def method5_generate_a_count_slash_percentage_count_of_NULL_values_in_each_column():
+    def method5_generate_a_count_slash_percentage_count_of_NULL_values_in_each_column(self):
+        print(self.df2.isnull().count())#.count()
         pass
     def method6_anyothermethodsyoufinduseful():
         pass
@@ -235,4 +242,7 @@ if __name__ == '__main__':
     a = RDS.initialise_engine_and_extract_data()
     b = RDS.save_dataframe_to_csv()
     c = RDS.load_dataframe_from_csv()
-    
+    DT = DataTransform()
+    d = DT
+    e = DT
+    f = DT
