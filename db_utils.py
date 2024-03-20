@@ -224,7 +224,8 @@ class DataFrameInfo:
         print(self.df2.shape)
         pass
     def method5_generate_a_count_slash_percentage_count_of_NULL_values_in_each_column(self):
-        print(self.df2.isnull().count())#.count()
+        print(self.df2.isnull().count())#.count(),
+        #TODO: Must still generate percentage count of nulls in each column
         pass
     def method6_anyothermethodsyoufinduseful():
         pass
@@ -236,6 +237,24 @@ Print out the shape of the DataFrame
 Generate a count/percentage count of NULL values in each column
 Any other methods you may find useful'''
     pass
+
+def amount_of_nulls_and_column_drop():
+    #determine the amount of NULLs in each column. 
+    #Determine which columns should be dropped and drop them.
+    pass
+
+class DataFrameTransform:
+    #create a method which can impute your DataFrame columns. 
+    #Decide whether the column should be imputed with the median or the mean and 
+    #impute the NULL values.
+    pass
+
+#Run your NULL checking method/function again to check that all NULLs have been removed.
+
+class Plotter:
+    #Generate a plot by creating a method in your Plotter class to visualise the removal of NULL values.
+    pass
+
 
 if __name__ == '__main__':
     RDS = RDSDatabaseConnector()
