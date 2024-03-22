@@ -4,19 +4,18 @@ import pandas as pd
 
 def function_to_load_credentials():
     '''
-    Creates a python object from a YAML file in the current working
-    directory to be stored in a global variable.
+    Creates a python object from a YAML file.
     
     Parameters:
     -----------
     credentials: python object
-    Contains the necessary credentials for use
-    in authorising access to remote database information.
+        Contains the necessary credentials for use
+        in authorising access to remote database information.
     '''
     with open("credentials.yaml", "r") as f:
         credentials = yaml.safe_load(f)
     return credentials
-credentials = function_to_load_credentials()
+
 
 class RDSDatabaseConnector:
     '''
@@ -27,8 +26,8 @@ class RDSDatabaseConnector:
     Parameters:
     -----------
     credentials: python object
-        Contains the necessary credentials for use
-        in authorising access to remote database information.
+        Contains the necessary credentials for use in
+        authorising access to remote database information.
     
     Attributes:
     -----------
@@ -55,7 +54,16 @@ class RDSDatabaseConnector:
     load_dataframe_from_csv(self)
         Loads that dataframe from a csv file.
     '''
-    def __init__(self, credentials = credentials):
+    def __init__(self, credentials = function_to_load_credentials()):
+        '''
+        Initialiser.
+        
+        Parameters:
+        -----------
+        credentials: python object
+            Contains the necessary credentials for use in
+            authorising access to remote database information.
+        '''
         self.host = credentials['RDS_HOST']
         self.password = credentials['RDS_PASSWORD']
         self.user = credentials['RDS_USER']
@@ -67,17 +75,6 @@ class RDSDatabaseConnector:
         Initialises the engine, extracts the
         data from the location where it is stored,
         and then saves that as a pandas dataframe.
-        
-        Parameters:
-        -----------
-        engine: Engine
-            The engine required to extract data.
-        encon: Connection
-            A variable to enable a connection.
-        loan_payments: DataFrame
-            The loan_payments dataframe.
-        df: DataFrame
-            The dataframe in question.
         '''
         engine = create_engine(f"postgresql+psycopg2://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}")
         encon = engine.connect()
@@ -88,11 +85,6 @@ class RDSDatabaseConnector:
     def save_dataframe_to_csv(self):
         '''
         Saves that dataframe to a csv file.
-        
-        Parameters:
-        -----------
-        my_data_frame: Dataframe
-            The dataframe obtained from a pre-defined method.
         '''
         my_data_frame = self.initialise_engine_and_extract_data()
         my_data_frame.to_csv('data.csv', index=False)
@@ -100,11 +92,6 @@ class RDSDatabaseConnector:
     def load_dataframe_from_csv(self):
         '''
         Loads that dataframe from a csv file.
-        
-        Parameters:
-        -----------
-        df: Pandas DataFrame Object
-            The dataframe in question.
         '''
         df = pd.read_csv('data.csv')
         column_names = []
@@ -117,17 +104,56 @@ class DataTransform:
     '''
     This class holds methods which, when called, will
     transform the formats of certain columns in a table.
-    PARAMETERS
-    ATTRIBUTES
-    METHODS
+    
+    Parameters:
+    -----------
+    df: DataFrame
+        The pandas dataframe containing
+        the data.
+    
+    Attributes:
+    -----------
+    df: DataFrame
+        The pandas dataframe containing
+        the data.
+    
+    Methods:
+    --------
+    excess_symbol_removal()
+        When called, will remove any symbols which
+        are not deemed necessary for our EDA goals.
+        Must accept arguments which go on to
+        specify which symbols i.e., columns are
+        to be removed.
+    to_categorical()
+        When called, will convert column values
+        to a categorical form.
+    numerical_to_boolean()
+        Goes from a numerical to a boolean pandas type
+    categorical_to_boolean()
+        Goes from categorical to boolean
+    int_to_float()
+        Goes from int to float
+    float_to_int()
+        Goes from float to int
+    convert_dates_to_proper_format()
+        Converts dates to the proper format
+
     '''
-    def __init__(self, df = pd.read_csv('data.csv')):
+    def __init__(self, df = RDSDatabaseConnector.load_dataframe_from_csv()):
+        '''
+        Initialiser.
+        
+        df: DataFrame
+            The pandas dataframe containing
+            the data.
+        '''
         self.df = df
-        pass
+
     def excess_symbol_removal(self):
         '''
         When called, will remove any symbols which
-        are not deemed necessary for our EDA goals
+        are not deemed necessary for our EDA goals.
         Must accept arguments which go on to
         specify which symbols i.e., columns are
         to be removed.
@@ -140,13 +166,11 @@ class DataTransform:
             remaining_symbols.append(i)
         print('These are the remaining symbols: ', remaining_symbols)
         return self.df
-    def numerical_to_categorical(self):
+    
+    def to_categorical(self):
         '''
         When called, will convert column values
-        from a numerical form to a categorical form.
-        Depending on the data involved, there could
-        be many categories. For instance:
-        1,2,3, to One, Two, Three.
+        to a categorical form.
         '''
                 
         self.df['term'] = self.df['term'].astype("category")
@@ -163,8 +187,8 @@ class DataTransform:
         self.df['application_type'] = self.df['application_type'].astype("category")
         #TODO: This ^^^^^ is tedious and it reuses code. Automate it.
         
-        
         pass
+    
     def numerical_to_boolean(self):
         '''
         Goes from a numerical to a boolean pandas type
@@ -181,67 +205,135 @@ class DataTransform:
         #as this was the only column I thought might even need
         #converting to begin with...
         pass
+    
     def categorical_to_boolean(self):
+        '''
+        Goes from categorical to boolean
+        '''
         # df['col'] = df['col'].astype('bool')
         pass
+    
     def int_to_float(self):
+        '''
+        Goes from int to float
+        '''
         # df['col'] = df['col'].astype('float')
         pass
+    
     def float_to_int(self):
+        '''
+        Goes from float to int
+        '''
         # df['col'] = df['col'].astype('int')
         pass
+    
     def convert_dates_to_proper_format(self):
+        '''
+        Converts dates to the proper format
+        '''
         #TODO: Figure out what the 'proper' format is.
         self.df['issue_date'] = pd.to_datetime(self.df['issue_date'])
         self.df['earliest_credit_line'] = pd.to_datetime(self.df['earliest_credit_line'])
         self.df['last_payment_date'] = pd.to_datetime(self.df['last_payment_date'])
         self.df['next_payment_date'] = pd.to_datetime(self.df['next_payment_date'])
         self.df['last_credit_pull_date'] = pd.to_datetime(self.df['last_credit_pull_date'])
-        pass
-    def method8():
-        pass
-    def method9():
-        pass
-    def add_more_methods_as_necessary():
-        pass
+
     
 class DataFrameInfo:
-    '''DOCSTRING'''
+    '''
+    Performs EDA transformations on the data
+    
+    Parameters:
+    -----------
+    df2: DataFrame
+        Contains the dataframe previously
+        worked on
+    
+    Attributes:
+    -----------
+    df2: DataFrame
+        Contains the dataframe previously
+        worked on
+    
+    Methods:
+    --------
+    describe_all_columns_to_check_their_datatypes()
+        Describe all columns in the DataFrame to check their data types
+    extract_statistical_values_median_stddev_mean_from_cols_and_dataframe()
+        Extract statistical values: median, standard deviation and mean from the columns and the DataFrame
+    count_distinct_values_in_categorical_columns()
+        Count distinct values in categorical columns
+    print_out_the_shape_of_the_dataframe()
+        Print out the shape of the DataFrame
+    generate_a_count_slash_percentage_count_of_NULL_values_in_each_column()
+        Generate a count/percentage count of NULL values in each column
+    '''
     def __init__(self, df2):
+        '''
+        desc
+        
+        Parameters:
+        -----------
+        df2: DataFrame
+            Contains the dataframe previously
+            worked on
+        '''
         self.df2 = df2
         pass
-    def method1_describe_all_columns_to_check_their_datatypes(self):
+    
+    def describe_all_columns_to_check_their_datatypes(self):
+        '''
+        Describe all columns in the DataFrame to check their data types
+        '''
         print(self.df2.dtypes)
         pass
-    def method2_extract_statistical_values_median_stddev_mean_from_cols_and_dataframe(self):
+    
+    def extract_statistical_values_median_stddev_mean_from_cols_and_dataframe(self):
+        '''
+        Extract statistical values: median, standard deviation and mean from the columns and the DataFrame
+        '''
         print(self.df2.describe()) # gives everything but the median.
         print(self.df2.median(numeric_only=True))
         pass
-    def method3_count_distinct_values_in_categorical_columns(self):
+    
+    def count_distinct_values_in_categorical_columns(self):
+        '''
+        Count distinct values in categorical columns
+        '''
         print(self.df2.nunique())
         pass
-    def method4_print_out_the_shape_of_the_dataframe(self):
+    
+    def print_out_the_shape_of_the_dataframe(self):
+        '''
+        Print out the shape of the DataFrame
+        '''
         print(self.df2.shape)
         pass
-    def method5_generate_a_count_slash_percentage_count_of_NULL_values_in_each_column(self):
+    
+    def generate_a_count_slash_percentage_count_of_NULL_values_in_each_column(self):
+        '''
+        Generate a count/percentage count of NULL values in each column
+        '''
         print(self.df2.isnull().count())#.count(),
         #TODO: Must still generate percentage count of nulls in each column
-        pass
-    def method6_anyothermethodsyoufinduseful():
-        pass
-    '''
-    Describe all columns in the DataFrame to check their data types
-Extract statistical values: median, standard deviation and mean from the columns and the DataFrame
-Count distinct values in categorical columns
-Print out the shape of the DataFrame
-Generate a count/percentage count of NULL values in each column
-Any other methods you may find useful'''
+        print('')
     pass
 
-def amount_of_nulls_and_column_drop():
+
+def amount_of_nulls_and_column_drop(dataframe = DataFrameInfo(df2)):
+    '''
+    desc
+    
+    Parameters:
+    -----------
+    '''
+    print('a string')
+    print(dataframe.isnull().count())#.count()
     #determine the amount of NULLs in each column. 
     #Determine which columns should be dropped and drop them.
+    #if null nums > certain number, drop cols with that number of nulls.
     pass
+
 
 class DataFrameTransform:
     #create a method which can impute your DataFrame columns. 
