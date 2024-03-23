@@ -69,6 +69,7 @@ class RDSDatabaseConnector:
         self.user = credentials['RDS_USER']
         self.database = credentials['RDS_DATABASE']
         self.port = credentials['RDS_PORT']
+        
     
     def initialise_engine_and_extract_data(self):
         '''
@@ -93,12 +94,12 @@ class RDSDatabaseConnector:
         '''
         Loads that dataframe from a csv file.
         '''
-        df = pd.read_csv('data.csv')
+        data_frame = pd.read_csv('data.csv')
         column_names = []
-        for i in df:
+        for i in data_frame:
             column_names.append(i)
         print(column_names)
-        return df
+        return data_frame
 
 class DataTransform:
     '''
@@ -140,7 +141,7 @@ class DataTransform:
         Converts dates to the proper format
 
     '''
-    def __init__(self, df = RDSDatabaseConnector.load_dataframe_from_csv()):
+    def __init__(self, RDSDconn = RDSDatabaseConnector): #TODO:make it a variable and use less self.variables
         '''
         Initialiser.
         
@@ -148,7 +149,7 @@ class DataTransform:
             The pandas dataframe containing
             the data.
         '''
-        self.df = df
+        self.df = RDSDconn.load_dataframe_from_csv(self)
 
     def excess_symbol_removal(self):
         '''
@@ -237,6 +238,7 @@ class DataTransform:
         self.df['last_payment_date'] = pd.to_datetime(self.df['last_payment_date'])
         self.df['next_payment_date'] = pd.to_datetime(self.df['next_payment_date'])
         self.df['last_credit_pull_date'] = pd.to_datetime(self.df['last_credit_pull_date'])
+        return self.df
 
     
 class DataFrameInfo:
@@ -268,7 +270,7 @@ class DataFrameInfo:
     generate_a_count_slash_percentage_count_of_NULL_values_in_each_column()
         Generate a count/percentage count of NULL values in each column
     '''
-    def __init__(self, df2):
+    def __init__(self, DT = DataTransform):
         '''
         desc
         
@@ -278,7 +280,7 @@ class DataFrameInfo:
             Contains the dataframe previously
             worked on
         '''
-        self.df2 = df2
+        self.df2 = DT.convert_dates_to_proper_format()
         pass
     
     def describe_all_columns_to_check_their_datatypes(self):
@@ -308,7 +310,6 @@ class DataFrameInfo:
         Print out the shape of the DataFrame
         '''
         print(self.df2.shape)
-        pass
     
     def generate_a_count_slash_percentage_count_of_NULL_values_in_each_column(self):
         '''
@@ -317,10 +318,11 @@ class DataFrameInfo:
         print(self.df2.isnull().count())#.count(),
         #TODO: Must still generate percentage count of nulls in each column
         print('')
+        return self.df2
     pass
 
 
-def amount_of_nulls_and_column_drop(dataframe = DataFrameInfo(df2)):
+def amount_of_nulls_and_column_drop(DFI = DataFrameInfo):
     '''
     desc
     
@@ -328,7 +330,9 @@ def amount_of_nulls_and_column_drop(dataframe = DataFrameInfo(df2)):
     -----------
     '''
     print('a string')
-    print(dataframe.isnull().count())#.count()
+    DFI.count_distinct_values_in_categorical_columns()
+    
+    #print(DFI.isnull().count())#.count()
     #determine the amount of NULLs in each column. 
     #Determine which columns should be dropped and drop them.
     #if null nums > certain number, drop cols with that number of nulls.
@@ -349,11 +353,36 @@ class Plotter:
 
 
 if __name__ == '__main__':
-    RDS = RDSDatabaseConnector()
-    a = RDS.initialise_engine_and_extract_data()
-    b = RDS.save_dataframe_to_csv()
-    c = RDS.load_dataframe_from_csv()
-    DT = DataTransform()
-    d = DT
-    e = DT
-    f = DT
+    pass
+
+
+
+#TODO: Find a way to use fewer self variables
+# Assign a variable before calling any method inside of a class
+# Maybe use global variables, although this was less clear
+# Read that notebook from before!!!
+
+# I feel like my classes are not very linked...
+# I feel like I cant pass the dataframes between the classes very easily
+# How do I implement a way to take my dataframe out of the classes and update it on its own using the classes
+# I feel there is something fundamental that has gone wrong here but I cannot tell what it is...
+
+
+# df = pd.read_csv
+#
+#
+#
+#
+#
+#
+#
+#
+# As suggested, I set up a ipynb file to do most of my querying
+# But when I do that it makes me feel like im
+# taking my dataframe and doing things to it, which 
+# im sure is the point
+# but then when i do that it makes it hard to see linearity in 
+# what I'm doing...
+# But then when I consider the alternative its not really what you
+# want me to do is it? because
+#
