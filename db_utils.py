@@ -87,19 +87,19 @@ class RDSDatabaseConnector:
         '''
         Saves that dataframe to a csv file.
         '''
-        my_data_frame = self.initialise_engine_and_extract_data()
-        my_data_frame.to_csv('data.csv', index=False)
+        df = self.initialise_engine_and_extract_data()
+        df.to_csv('data.csv', index=False)
     
     def load_dataframe_from_csv(self):
         '''
         Loads that dataframe from a csv file.
         '''
-        data_frame = pd.read_csv('data.csv')
-        column_names = []
-        for i in data_frame:
-            column_names.append(i)
-        print(column_names)
-        return data_frame
+        df = pd.read_csv('data.csv')
+        '''#column_names = []
+        #for i in df:
+        #    column_names.append(i)
+        #print(column_names)'''
+        return df
 
 class DataTransform:
     '''
@@ -141,7 +141,7 @@ class DataTransform:
         Converts dates to the proper format
 
     '''
-    def __init__(self, RDSDconn = RDSDatabaseConnector): #TODO:make it a variable and use less self.variables
+    def __init__(self): #TODO:make it a variable and use less self.variables
         '''
         Initialiser.
         
@@ -149,9 +149,9 @@ class DataTransform:
             The pandas dataframe containing
             the data.
         '''
-        self.df = RDSDconn.load_dataframe_from_csv(self)
+        pass
 
-    def excess_symbol_removal(self):
+    def excess_symbol_removal(self, df, symbols):
         '''
         When called, will remove any symbols which
         are not deemed necessary for our EDA goals.
@@ -159,86 +159,55 @@ class DataTransform:
         specify which symbols i.e., columns are
         to be removed.
         '''
-        symbols = str(input('separate by spaces which columns are to be dropped: ')).split()
+        #symbols = str(input('separate by spaces which columns are to be dropped: ')).split()
         print('These are the symbols that will be dropped: ',symbols)
-        self.df = self.df.drop(labels=symbols, axis=1, )
+        df = df.drop(labels=symbols, axis=1, )
         remaining_symbols = []
-        for i in self.df:
+        for i in df:
             remaining_symbols.append(i)
         print('These are the remaining symbols: ', remaining_symbols)
-        return self.df
+        return df
     
-    def to_categorical(self):
+    def to_categorical(self, df, list_of_to_categorical):
         '''
         When called, will convert column values
         to a categorical form.
         '''
-                
-        self.df['term'] = self.df['term'].astype("category")
-        self.df['grade'] = self.df['grade'].astype("category") #made into category type!
-        #TODO: Grade was not originally a numerical, so one might want to consider changing the method name
-        #to something more like 'general_to_categorical' or something similar. Also change description too.
-        self.df['sub_grade'] = self.df['sub_grade'].astype("category")
-        self.df['home_ownership'] = self.df['home_ownership'].astype("category")
-        self.df['verification_status'] = self.df['verification_status'].astype("category")
-        self.df['loan_status'] = self.df['loan_status'].astype("category")
-        self.df['payment_plan'] = self.df['payment_plan'].astype("category")
-        self.df['purpose'] = self.df['purpose'].astype("category")
-        self.df['delinq_2yrs'] = self.df['delinq_2yrs'].astype("category")
-        self.df['application_type'] = self.df['application_type'].astype("category")
-        #TODO: This ^^^^^ is tedious and it reuses code. Automate it.
-        
-        pass
+        for i in list_of_to_categorical:
+            df[i] = df[i].astype("category")
+        return df
     
-    def numerical_to_boolean(self):
+    def to_boolean(self, df, list_of_to_boolean):
         '''
         Goes from a numerical to a boolean pandas type
         '''
-        #TODO: Find a way to convert columns from numerical to boolean, i.e., int or float to bool
-        # df['col'] = df['col'].astype('bool')
-        #TODO: Find some columns where this might be useful.
-        # 'policy_code' perhaps, although I will have to check if there
-        # are other policy codes other than '1' as if there are others that aren't 1 or 0 then
-        # it would likely be better as a category anyway
-        
-        #seeing as though there is only one policy code, i.e., '1'
-        #there is no need to convert any of the columns to boolean
-        #as this was the only column I thought might even need
-        #converting to begin with...
-        pass
+        for i in list_of_to_boolean:
+            df[i] = df[i].astype("bool")
+        return df
     
-    def categorical_to_boolean(self):
-        '''
-        Goes from categorical to boolean
-        '''
-        # df['col'] = df['col'].astype('bool')
-        pass
-    
-    def int_to_float(self):
+    def to_float(self, df, list_of_to_float):
         '''
         Goes from int to float
         '''
-        # df['col'] = df['col'].astype('float')
-        pass
+        for i in list_of_to_float:
+            df[i] = df[i].astype("float")
+        return df
     
-    def float_to_int(self):
+    def to_int(self, df, list_of_to_int):
         '''
         Goes from float to int
         '''
-        # df['col'] = df['col'].astype('int')
-        pass
+        for i in list_of_to_int:
+            df[i] = df[i].astype("int")
+        return df
     
-    def convert_dates_to_proper_format(self):
+    def convert_dates_to_proper_format(self, df, dates_to_convert):
         '''
         Converts dates to the proper format
         '''
-        #TODO: Figure out what the 'proper' format is.
-        self.df['issue_date'] = pd.to_datetime(self.df['issue_date'])
-        self.df['earliest_credit_line'] = pd.to_datetime(self.df['earliest_credit_line'])
-        self.df['last_payment_date'] = pd.to_datetime(self.df['last_payment_date'])
-        self.df['next_payment_date'] = pd.to_datetime(self.df['next_payment_date'])
-        self.df['last_credit_pull_date'] = pd.to_datetime(self.df['last_credit_pull_date'])
-        return self.df
+        for i in dates_to_convert:
+            df[i] = pd.to_datetime(df[i])
+        return df
 
     
 class DataFrameInfo:
@@ -315,9 +284,10 @@ class DataFrameInfo:
         '''
         Generate a count/percentage count of NULL values in each column
         '''
-        print(self.df2.isnull().count())#.count(),
+        print('Number of Non-nulls in the column values for id:')
+        print(self.df2['id'].isnull().count())#.count(),
         #TODO: Must still generate percentage count of nulls in each column
-        print('')
+        #print('')
         return self.df2
     pass
 
@@ -329,11 +299,14 @@ def amount_of_nulls_and_column_drop(DFI = DataFrameInfo):
     Parameters:
     -----------
     '''
-    print('a string')
-    DFI.count_distinct_values_in_categorical_columns()
-    
-    #print(DFI.isnull().count())#.count()
-    #determine the amount of NULLs in each column. 
+    #print('COLUMN NAMES AND NO. OF NON-NULL VALUES IN COLUMN')
+    df = DFI.generate_a_count_slash_percentage_count_of_NULL_values_in_each_column()
+    for i in df:
+        print(i, ':', 'Non-nulls: ', (df[i].isnull().count()), 'Non-Null= ', (((df[i].isnull().count())/(df.shape[0]))*100),'%')
+        #determine a percentage of nulls that is acceptable
+        #if non-nulls < 80% of total dataset, drop column
+        
+ 
     #Determine which columns should be dropped and drop them.
     #if null nums > certain number, drop cols with that number of nulls.
     pass
@@ -368,21 +341,26 @@ if __name__ == '__main__':
 # I feel there is something fundamental that has gone wrong here but I cannot tell what it is...
 
 
-# df = pd.read_csv
-#
-#
-#
-#
-#
-#
-#
-#
-# As suggested, I set up a ipynb file to do most of my querying
-# But when I do that it makes me feel like im
-# taking my dataframe and doing things to it, which 
-# im sure is the point
-# but then when i do that it makes it hard to see linearity in 
-# what I'm doing...
-# But then when I consider the alternative its not really what you
-# want me to do is it? because
-#
+
+#Refactor code such that we do not pass the dataframe through the functions/classes
+#within the db_utils file but instead it is parsed as an external parameter
+#taken from the analysis_and_querying file!!!
+
+#TODO: Create a whole new repository focused on the imagined
+#refactoring of my code here but based on the principle that
+#all classes/functions will have to accept an external
+#parameter df, which is to be the pandas dataframe containing
+#all the relevant data to be manipulated and analysed.
+
+#TODO: Make a decision about the yaml file...
+#Problem, last time I tried to experiment with
+#another repository for this project, the
+#interaction between the code and the yaml
+#file didn't seem to work.
+#To get around this I hard coded the relevant
+#content contained within the yaml file directly
+#into the relevant area of the code.
+#I don't see a technical reason why not to do this
+#again, but it may well make it confusing for
+#me to deal with later on...
+#Decision made, hard coding now.
