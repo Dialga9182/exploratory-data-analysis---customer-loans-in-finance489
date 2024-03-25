@@ -295,26 +295,20 @@ class DataFrameInfo:
         return df
 
 
-def amount_of_nulls_and_column_drop(DFI = DataFrameInfo):
+def amount_of_nulls_and_column_drop(df):
     '''
     desc
     
     Parameters:
     -----------
     '''
-    #print('COLUMN NAMES AND NO. OF NON-NULL VALUES IN COLUMN')
-    df = DFI.generate_a_count_slash_percentage_count_of_NULL_values_in_each_column()
     for i in df:
         print(i, ':', 'Non-nulls: ', (df[i].isnull().count()), 'Non-Null= ', (((df[i].isnull().count())/(df.shape[0]))*100),'%')
         #determine a percentage of nulls that is acceptable
         #if non-nulls < 80% of total dataset, drop column
-        if (((df[i].isnull().count())/(df.shape[0]))*100) < 80:
+        if (((df[i].isnull().count())/(df.shape[0]))*100) < 101:
             df.drop(i, index = 1)
-        
- 
-    #Determine which columns should be dropped and drop them.
-    #if null nums > certain number, drop cols with that number of nulls.
-    pass
+    return df
 
 
 class DataFrameTransform:
