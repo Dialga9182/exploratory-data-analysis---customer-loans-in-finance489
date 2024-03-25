@@ -159,6 +159,6 @@ for i in df.columns:
         #if non-nulls < 80% of total dataset, drop column
         if (((df[i].isnull().count())/(df.shape[0]))*100) < 101:
             print('NOW DROPPING COLUMNS')
-            df.drop(columns = i, inplace=True)
+            df.drop(columns = i, inplace=False)
 print(df)
 print('HERE TO DROP COLUMNS END')
