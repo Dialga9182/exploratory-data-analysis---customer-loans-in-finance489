@@ -101,6 +101,7 @@ class RDSDatabaseConnector:
         #print(column_names)'''
         return df
 
+
 class DataTransform:
     '''
     This class holds methods which, when called, will
@@ -239,7 +240,7 @@ class DataFrameInfo:
     generate_a_count_slash_percentage_count_of_NULL_values_in_each_column()
         Generate a count/percentage count of NULL values in each column
     '''
-    def __init__(self, DT = DataTransform):
+    def __init__(self):
         '''
         desc
         
@@ -249,47 +250,49 @@ class DataFrameInfo:
             Contains the dataframe previously
             worked on
         '''
-        self.df2 = DT.convert_dates_to_proper_format()
         pass
     
-    def describe_all_columns_to_check_their_datatypes(self):
+    def describe_all_columns_to_check_their_datatypes(self, df):
         '''
         Describe all columns in the DataFrame to check their data types
         '''
-        print(self.df2.dtypes)
-        pass
+        print(df.dtypes)
+        return df
     
-    def extract_statistical_values_median_stddev_mean_from_cols_and_dataframe(self):
+    def extract_statistical_values_median_stddev_mean_from_cols_and_dataframe(self, df):
         '''
         Extract statistical values: median, standard deviation and mean from the columns and the DataFrame
         '''
-        print(self.df2.describe()) # gives everything but the median.
-        print(self.df2.median(numeric_only=True))
-        pass
+        print(df.describe()) # gives everything but the median.
+        print('Medians for each column: \n')
+        print(df.median(numeric_only=True))
+        return df
     
-    def count_distinct_values_in_categorical_columns(self):
+    def count_distinct_values_in_categorical_columns(self, df):
         '''
         Count distinct values in categorical columns
         '''
-        print(self.df2.nunique())
-        pass
+        print(df.nunique())
+        return df
     
-    def print_out_the_shape_of_the_dataframe(self):
+    def print_out_the_shape_of_the_dataframe(self, df):
         '''
         Print out the shape of the DataFrame
         '''
-        print(self.df2.shape)
+        print(df.shape)
+        return df
     
-    def generate_a_count_slash_percentage_count_of_NULL_values_in_each_column(self):
+    def generate_a_count_slash_percentage_count_of_NULL_values_in_each_column(self, df):
         '''
         Generate a count/percentage count of NULL values in each column
         '''
-        print('Number of Non-nulls in the column values for id:')
-        print(self.df2['id'].isnull().count())#.count(),
-        #TODO: Must still generate percentage count of nulls in each column
-        #print('')
-        return self.df2
-    pass
+        for i in df:
+            print(i, ':', 'Non-nulls: ', (df[i].isnull().count()), 'Non-Null= ', (((df[i].isnull().count())/(df.shape[0]))*100),'%')
+            #determine a percentage of nulls that is acceptable
+            #if non-nulls < 80% of total dataset, drop column
+            #if (((df[i].isnull().count())/(df.shape[0]))*100) < 80:
+                #df.drop(i, index = 1)
+        return df
 
 
 def amount_of_nulls_and_column_drop(DFI = DataFrameInfo):
@@ -305,6 +308,8 @@ def amount_of_nulls_and_column_drop(DFI = DataFrameInfo):
         print(i, ':', 'Non-nulls: ', (df[i].isnull().count()), 'Non-Null= ', (((df[i].isnull().count())/(df.shape[0]))*100),'%')
         #determine a percentage of nulls that is acceptable
         #if non-nulls < 80% of total dataset, drop column
+        if (((df[i].isnull().count())/(df.shape[0]))*100) < 80:
+            df.drop(i, index = 1)
         
  
     #Determine which columns should be dropped and drop them.
@@ -327,40 +332,3 @@ class Plotter:
 
 if __name__ == '__main__':
     pass
-
-
-
-#TODO: Find a way to use fewer self variables
-# Assign a variable before calling any method inside of a class
-# Maybe use global variables, although this was less clear
-# Read that notebook from before!!!
-
-# I feel like my classes are not very linked...
-# I feel like I cant pass the dataframes between the classes very easily
-# How do I implement a way to take my dataframe out of the classes and update it on its own using the classes
-# I feel there is something fundamental that has gone wrong here but I cannot tell what it is...
-
-
-
-#Refactor code such that we do not pass the dataframe through the functions/classes
-#within the db_utils file but instead it is parsed as an external parameter
-#taken from the analysis_and_querying file!!!
-
-#TODO: Create a whole new repository focused on the imagined
-#refactoring of my code here but based on the principle that
-#all classes/functions will have to accept an external
-#parameter df, which is to be the pandas dataframe containing
-#all the relevant data to be manipulated and analysed.
-
-#TODO: Make a decision about the yaml file...
-#Problem, last time I tried to experiment with
-#another repository for this project, the
-#interaction between the code and the yaml
-#file didn't seem to work.
-#To get around this I hard coded the relevant
-#content contained within the yaml file directly
-#into the relevant area of the code.
-#I don't see a technical reason why not to do this
-#again, but it may well make it confusing for
-#me to deal with later on...
-#Decision made, hard coding now.
