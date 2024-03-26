@@ -152,13 +152,16 @@ if __name__ == '__main__':
     
     #df = amount_of_nulls_and_column_drop(df)
     
-print('HERE TO DROP COLUMNS BEGIN')
-for i in df.columns:
-        print(i, ':', 'Non-nulls: ', (df[i].isnull().count()), 'Non-Null= ', (((df[i].isnull().count())/(df.shape[0]))*100),'%')
-        #determine a percentage of nulls that is acceptable
-        #if non-nulls < 80% of total dataset, drop column
-        if (((df[i].isnull().count())/(df.shape[0]))*100) < 101:
-            print('NOW DROPPING COLUMNS')
-            df.drop(columns = i, inplace=False)
-print(df)
-print('HERE TO DROP COLUMNS END')
+    print('HERE TO DROP COLUMNS BEGIN')
+    for i in df.columns:
+            print(i, ':', 'Non-nulls: ', (df[i].isnull().count()), 'Non-Null= ', (((df[i].isnull().count())/(df.shape[0]))*100),'%')
+            #determine a percentage of nulls that is acceptable
+            #if non-nulls < 80% of total dataset, drop column
+            if (((df[i].isnull().count())/(df.shape[0]))*100) < 10:
+                print('NOW DROPPING COLUMNS')
+                df.drop(columns = i, inplace=True)
+
+    print(df)
+
+    print('HERE TO DROP COLUMNS END')
+    #print(df2)
