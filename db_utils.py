@@ -1,6 +1,7 @@
 import yaml
 from sqlalchemy import create_engine
 import pandas as pd
+import missingno as msno
 
 def function_to_load_credentials():
     '''
@@ -306,20 +307,65 @@ def amount_of_nulls_and_column_drop(df):
         print(i, ':', 'Non-nulls: ', (df[i].isnull().count()), 'Non-Null= ', (((df[i].isnull().count())/(df.shape[0]))*100),'%')
         #determine a percentage of nulls that is acceptable
         #if non-nulls < 80% of total dataset, drop column
-        if (((df[i].isnull().count())/(df.shape[0]))*100) < 101:
+        if (((df[i].isnull().count())/(df.shape[0]))*100) < 80:
             df.drop(i, index = 1)
     return df
 
 
 class DataFrameTransform:
+    '''DOCSTRING'''
+    def __init__(self):
+        '''DOCSTRING'''
+        pass
+    
+    def impute(self, df):
+        '''DOCSTRING'''
+        #TODO: This method is one which can impute your DataFrame columns.
+        #Decide whether the column should be imputed with the median or the
+        #mean and impute the NULL values
+        #df = df.fillna(df.mean, inplace=True)
+        #if column of type x then do y.
+        #only four dtypes: category, datetime64[ns], float64, and int64
+        for i in df:
+            print(type(df[i].dtype))
+            if df[i].dtype == 'category':
+                print('1')
+            elif df[i].dtype == 'datetime64[ns]':
+                print('2')
+            elif df[i].dtype == 'float64':
+                print('3')
+            elif df[i].dtype == 'int64':
+                print('4')
+                print(df[i])
+                #df[i].ffill(df.mean, inplace=False)
+            else:
+                print('5')
+        
+        #print(df['id'].dtype)
+        #print(df.dtypes.value_counts())
+        return df
     #create a method which can impute your DataFrame columns. 
     #Decide whether the column should be imputed with the median or the mean and 
     #impute the NULL values.
-    pass
 
 #Run your NULL checking method/function again to check that all NULLs have been removed.
 
 class Plotter:
+    '''DOCSTRING'''
+    def __init__(self):
+        pass
+    
+    def generate_a_bar_plot_for_nulls(self, df):
+        fig = msno.bar(df)
+        fig_copy = fig.get_figure()
+        fig_copy.savefig('Nulls_Before.png', bbox_inches = 'tight')#saves plot
+        df = amount_of_nulls_and_column_drop(df)#function that removes nulls
+        fig_2 =msno.bar(df)
+        fig_copy2 = fig_2.get_figure()
+        fig_copy2.savefig('Nulls_After.png', bbox_inches = 'tight')#saves plot
+        #bar chart of No. of nulls before nulls removal VS bar chart after nulls removal.
+        return df
+        #Generate a plot by creating a method in your Plotter class to visualise the removal of NULL values.
     #Generate a plot by creating a method in your Plotter class to visualise the removal of NULL values.
     pass
 
