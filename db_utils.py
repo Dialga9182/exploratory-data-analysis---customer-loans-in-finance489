@@ -288,7 +288,10 @@ class DataFrameInfo:
         Generate a count/percentage count of NULL values in each column
         '''
         for i in df:
-            print(i, ':', 'Non-nulls: ', (df[i].isnull().count()), 'Non-Null= ', (((df[i].isnull().count())/(df.shape[0]))*100),'%')
+            non_null_count = df[i].count()
+            total_count = df.shape[0]
+            percentage_non_null = (non_null_count / total_count) * 100
+            print(i, ': Non-nulls:', non_null_count, 'Non-Null Percentage:', percentage_non_null, '%')
             #determine a percentage of nulls that is acceptable
             #if non-nulls < 80% of total dataset, drop column
             #if (((df[i].isnull().count())/(df.shape[0]))*100) < 80:
@@ -298,17 +301,24 @@ class DataFrameInfo:
 
 def amount_of_nulls_and_column_drop(df):
     '''
-    desc
+    This function prints out the column names
+    and the percentage of non-nulls in that column.
     
     Parameters:
     -----------
     '''
     for i in df:
-        print(i, ':', 'Non-nulls: ', (df[i].isnull().count()), 'Non-Null= ', (((df[i].isnull().count())/(df.shape[0]))*100),'%')
+        non_null_count = df[i].count()
+        total_count = df.shape[0]
+        percentage_non_null = (non_null_count / total_count) * 100
+        print(i, ': Non-nulls:', non_null_count, 'Non-Null Percentage:', percentage_non_null, '%')
+        
+        #print(i, ':', 'Non-nulls: ', (df[i].isnull().count()), 'Non-Null= ', (((df[i].isnull().count())/(df.shape[0]))*100),'%')
         #determine a percentage of nulls that is acceptable
         #if non-nulls < 80% of total dataset, drop column
-        if (((df[i].isnull().count())/(df.shape[0]))*100) < 80:
-            df.drop(i, index = 1)
+        if percentage_non_null < 80:
+            print(f"Dropping column '{i}' with null percentage {percentage_non_null:.2f}%")
+            df.drop(i, axis=1, inplace=True)
     return df
 
 
@@ -326,27 +336,30 @@ class DataFrameTransform:
         #df = df.fillna(df.mean, inplace=True)
         #if column of type x then do y.
         #only four dtypes: category, datetime64[ns], float64, and int64
-        for i in df:
-            print(type(df[i].dtype))
-            if df[i].dtype == 'category':
-                print('1')
-            elif df[i].dtype == 'datetime64[ns]':
-                print('2')
-            elif df[i].dtype == 'float64':
-                print('3')
-            elif df[i].dtype == 'int64':
-                print('4')
-                print(df[i])
-                #df[i].ffill(df.mean, inplace=False)
-            else:
-                print('5')
         
-        #print(df['id'].dtype)
-        #print(df.dtypes.value_counts())
+            #print(i)
+        df['funded_amount'] = df['funded_amount'].fillna(df['funded_amount'].mean())
+        
+        df['int_rate'] = df['int_rate'].fillna(df['int_rate'].mean())
+        df['term'] = df['term'].fillna(df['term'].mode()[0])
+
+        df['employment_length'] = df['employment_length'].fillna(df['employment_length'].mode()[0])
+        
+        df = df.dropna(subset=['last_payment_date'], inplace=False)
+        #''.join(c for c in df['employment_length'] if c.isdigit())
+        
+        # string_2 = (''.join(c for c in string_2 if c.isdigit()))
+            #if i.isnull() == True:
+                #print(i)
         return df
     #create a method which can impute your DataFrame columns. 
     #Decide whether the column should be imputed with the median or the mean and 
     #impute the NULL values.
+    # using '''1''' as a place holder...
+    # '1 year' ----> int('1')
+    # if character to int is true, extract character from string object.
+    # for i in string:
+    #   if int(i) == True: 
 
 #Run your NULL checking method/function again to check that all NULLs have been removed.
 
