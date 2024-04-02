@@ -317,70 +317,44 @@ def amount_of_nulls_and_column_drop(df):
         #determine a percentage of nulls that is acceptable
         #if non-nulls < 80% of total dataset, drop column
         if percentage_non_null < 80:
-            print(f"Dropping column '{i}' with null percentage {percentage_non_null:.2f}%")
+            print(f"Dropping column '{i}' with non-null percentage {percentage_non_null:.2f}%")
             df.drop(i, axis=1, inplace=True)
     return df
 
 
 class DataFrameTransform:
-    '''DOCSTRING'''
+    '''
+    This class imputes data where necessary
+    and removes rows where necessary. 
+    '''
     def __init__(self):
         '''DOCSTRING'''
         pass
     
     def impute(self, df):
-        '''DOCSTRING'''
-        #TODO: This method is one which can impute your DataFrame columns.
-        #Decide whether the column should be imputed with the median or the
-        #mean and impute the NULL values
-        #df = df.fillna(df.mean, inplace=True)
-        #if column of type x then do y.
-        #only four dtypes: category, datetime64[ns], float64, and int64
+        '''
+        This method imputes data where necessary
+        and removes rows where necessary. 
         
-            #print(i)
+        '''
         df['funded_amount'] = df['funded_amount'].fillna(df['funded_amount'].mean())
-        
         df['int_rate'] = df['int_rate'].fillna(df['int_rate'].mean())
         df['term'] = df['term'].fillna(df['term'].mode()[0])
-
         df['employment_length'] = df['employment_length'].fillna(df['employment_length'].mode()[0])
         
         df = df.dropna(subset=['last_payment_date'], inplace=False)
-        #''.join(c for c in df['employment_length'] if c.isdigit())
-        
-        # string_2 = (''.join(c for c in string_2 if c.isdigit()))
-            #if i.isnull() == True:
-                #print(i)
+        #df = df.dropna(subset=['last_payment_date'], inplace=False)
         return df
-    #create a method which can impute your DataFrame columns. 
-    #Decide whether the column should be imputed with the median or the mean and 
-    #impute the NULL values.
-    # using '''1''' as a place holder...
-    # '1 year' ----> int('1')
-    # if character to int is true, extract character from string object.
-    # for i in string:
-    #   if int(i) == True: 
 
-#Run your NULL checking method/function again to check that all NULLs have been removed.
 
 class Plotter:
     '''DOCSTRING'''
     def __init__(self):
         pass
     
-    def generate_a_bar_plot_for_nulls(self, df):
-        fig = msno.bar(df)
-        fig_copy = fig.get_figure()
-        fig_copy.savefig('Nulls_Before.png', bbox_inches = 'tight')#saves plot
-        df = amount_of_nulls_and_column_drop(df)#function that removes nulls
-        fig_2 =msno.bar(df)
-        fig_copy2 = fig_2.get_figure()
-        fig_copy2.savefig('Nulls_After.png', bbox_inches = 'tight')#saves plot
-        #bar chart of No. of nulls before nulls removal VS bar chart after nulls removal.
+    def generate_a_plot_for_nulls(self, df):
+        msno.matrix(df)
         return df
-        #Generate a plot by creating a method in your Plotter class to visualise the removal of NULL values.
-    #Generate a plot by creating a method in your Plotter class to visualise the removal of NULL values.
-    pass
 
 
 if __name__ == '__main__':
