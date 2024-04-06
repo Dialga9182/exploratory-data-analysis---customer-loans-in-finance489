@@ -2,6 +2,7 @@ import yaml
 from sqlalchemy import create_engine
 import pandas as pd
 import missingno as msno
+from scipy.stats import skew, yeojohnson
 
 def function_to_load_credentials():
     '''
@@ -354,6 +355,21 @@ class Plotter:
     
     def generate_a_plot_for_nulls(self, df):
         msno.matrix(df)
+        return df
+    
+    def skew_correction(self, df):
+        list_for_skew = ['loan_amount', 'funded_amount', 'funded_amount_inv', 'instalment', 'open_accounts', 'total_accounts','out_prncp','out_prncp_inv', 'total_payment', 'total_payment_inv', 'total_rec_prncp', 'total_rec_int', 'last_payment_amount']
+        for i in list_for_skew:
+            print(i)
+            print(skew(df[i]))
+
+        for column in list_for_skew: 
+           df[column], _ = yeojohnson(df[column])
+
+        df[['loan_amount', 'funded_amount', 'funded_amount_inv', 'instalment',
+        'open_accounts', 'total_accounts', 'out_prncp', 'out_prncp_inv',
+        'total_payment', 'total_payment_inv', 'total_rec_prncp',
+        'total_rec_int', 'last_payment_amount']].hist(figsize=(20,15))
         return df
 
 
