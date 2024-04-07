@@ -1,3 +1,5 @@
+import yaml
+
 def function_to_load_credentials():
     '''
     Creates a python object from a YAML file.

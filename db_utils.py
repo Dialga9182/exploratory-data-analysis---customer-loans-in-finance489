@@ -371,24 +371,10 @@ class Plotter:
         'total_payment', 'total_payment_inv', 'total_rec_prncp',
         'total_rec_int', 'last_payment_amount']].hist(figsize=(20,15))
         return df
+    
+    def plotting_outliers(self, df):
+        pass
 
 
 if __name__ == '__main__':
-    #STEP 1:
-    #       Task 1 - Using standard pandas methods, identify the skewed columns in the data.
-    #       TODO: Search for 'skewness methods in the standard pandas library'
-    #       TODO: In ipynb file identify columns which can display skewness (I know some cant)
-    #       Task 2 - Determine a threshold for the skewness of the data, over which a column is considered skewed.
-    #       Task 3 - Visualise the data using your plotter class to analyse the skew.
-    #STEP 2:
-    #       Task 1 - Perform transformations on these columns to determine which transformation results in the
-    #                biggest reduction in skew.
-    #       Task 2 - Create the method to transform the columns in your DataFrameTransform class.
-    #STEP 3:
-    #       Task 1 - Apply the identified transformations to the columns to reduce their skewness.
-    #STEP 4:
-    #       Task 1 - Visualise the data to check the results of the transformation have improved the skewness
-    #                of the data.
-    #STEP 5:
-    #       Task 1 - At this point you may want to save a separate copy of your DataFrame to compare your results.
     pass

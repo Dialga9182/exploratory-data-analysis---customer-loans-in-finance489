@@ -1,3 +1,7 @@
+import pandas as pd
+from functions import function_to_load_credentials
+from sqlalchemy import create_engine
+
 class RDSDatabaseConnector:
     '''
     Facilitates the gathering and storing of tabular data
