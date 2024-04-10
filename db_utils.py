@@ -298,6 +298,15 @@ class DataFrameInfo:
             #if (((df[i].isnull().count())/(df.shape[0]))*100) < 80:
                 #df.drop(i, index = 1)
         return df
+    '''
+    should probably have sorted out a few lists regarding numeric, non-numeric,
+    categorical, datetimes etc for use as a copy-paste tool.
+    
+    yeah thats a good idea, you can put that into your DataInfo
+    class or whatever its called
+
+
+    '''
 
 
 def amount_of_nulls_and_column_drop(df):
