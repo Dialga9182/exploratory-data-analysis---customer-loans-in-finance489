@@ -215,7 +215,7 @@ class DataTransform: #MOVED
         return df
 
     
-class DataFrameInfo:
+class DataFrameInfo: #MOVED
     '''
     Performs EDA transformations on the data
     
@@ -244,7 +244,7 @@ class DataFrameInfo:
     generate_a_count_slash_percentage_count_of_NULL_values_in_each_column()
         Generate a count/percentage count of NULL values in each column
     '''
-    def __init__(self):
+    def __init__(self): #MOVED
         '''
         desc
         
@@ -256,14 +256,14 @@ class DataFrameInfo:
         '''
         pass
     
-    def describe_all_columns_to_check_their_datatypes(self, df):
+    def describe_all_columns_to_check_their_datatypes(self, df): #MOVED
         '''
         Describe all columns in the DataFrame to check their data types
         '''
         print(df.dtypes)
         return df
     
-    def extract_statistical_values_median_stddev_mean_from_cols_and_dataframe(self, df):
+    def extract_statistical_values_median_stddev_mean_from_cols_and_dataframe(self, df): #MOVED
         '''
         Extract statistical values: median, standard deviation and mean from the columns and the DataFrame
         '''
@@ -272,21 +272,21 @@ class DataFrameInfo:
         print(df.median(numeric_only=True))
         return df
     
-    def count_distinct_values_in_categorical_columns(self, df):
+    def count_distinct_values_in_categorical_columns(self, df): #MOVED
         '''
         Count distinct values in categorical columns
         '''
         print(df.nunique())
         return df
     
-    def print_out_the_shape_of_the_dataframe(self, df):
+    def print_out_the_shape_of_the_dataframe(self, df): #MOVED
         '''
         Print out the shape of the DataFrame
         '''
         print(df.shape)
         return df
     
-    def generate_a_count_slash_percentage_count_of_NULL_values_in_each_column(self, df):
+    def generate_a_count_slash_percentage_count_of_NULL_values_in_each_column(self, df): #MOVED
         '''
         Generate a count/percentage count of NULL values in each column
         '''
@@ -330,7 +330,7 @@ def amount_of_nulls_and_column_drop(df): #HAS BEEN MOVED TO functions.py 13-04-2
     return df
 
 
-class DataFrameTransform:
+class DataFrameTransform: #COPIED/PASTED
     '''
     This class imputes data where necessary
     and removes rows where necessary. 
@@ -454,7 +454,7 @@ class DataFrameTransform:
 
 
 
-class Plotter:
+class Plotter: #COPIED/PASTED
     '''DOCSTRING'''
     def __init__(self):
         pass
