@@ -22,7 +22,7 @@ def function_to_load_credentials(): #HAS BEEN MOVED TO functions.py 13-04-2024-1
     return credentials
 
 
-class RDSDatabaseConnector:
+class RDSDatabaseConnector: #MOVED
     '''
     Facilitates the gathering and storing of tabular data
     for the purposes of later processing and exploratory
@@ -59,7 +59,7 @@ class RDSDatabaseConnector:
     load_dataframe_from_csv(self)
         Loads that dataframe from a csv file.
     '''
-    def __init__(self, credentials = function_to_load_credentials()):
+    def __init__(self, credentials = function_to_load_credentials()): #MOVED
         '''
         Initialiser.
         
@@ -75,8 +75,7 @@ class RDSDatabaseConnector:
         self.database = credentials['RDS_DATABASE']
         self.port = credentials['RDS_PORT']
         
-    
-    def initialise_engine_and_extract_data(self):
+    def initialise_engine_and_extract_data(self): #MOVED
         '''
         Initialises the engine, extracts the
         data from the location where it is stored,
@@ -88,14 +87,14 @@ class RDSDatabaseConnector:
         df = pd.DataFrame(loan_payments)
         return df
     
-    def save_dataframe_to_csv(self):
+    def save_dataframe_to_csv(self): #MOVED
         '''
         Saves that dataframe to a csv file.
         '''
         df = self.initialise_engine_and_extract_data()
         df.to_csv('data.csv', index=False)
     
-    def load_dataframe_from_csv(self):
+    def load_dataframe_from_csv(self): #MOVED
         '''
         Loads that dataframe from a csv file.
         '''
@@ -107,7 +106,7 @@ class RDSDatabaseConnector:
         return df
 
 
-class DataTransform:
+class DataTransform: #MOVED
     '''
     This class holds methods which, when called, will
     transform the formats of certain columns in a table.
@@ -147,7 +146,7 @@ class DataTransform:
         Converts dates to the proper format
 
     '''
-    def __init__(self): #TODO:make it a variable and use less self.variables
+    def __init__(self): #MOVED
         '''
         Initialiser.
         
@@ -157,7 +156,7 @@ class DataTransform:
         '''
         pass
 
-    def excess_symbol_removal(self, df, symbols):
+    def excess_symbol_removal(self, df, symbols): #MOVED
         '''
         When called, will remove any symbols which
         are not deemed necessary for our EDA goals.
@@ -174,7 +173,7 @@ class DataTransform:
         print('These are the remaining symbols: ', remaining_symbols)
         return df
     
-    def to_categorical(self, df, list_of_to_categorical):
+    def to_categorical(self, df, list_of_to_categorical): #MOVED
         '''
         When called, will convert column values
         to a categorical form.
@@ -183,7 +182,7 @@ class DataTransform:
             df[i] = df[i].astype("category")
         return df
     
-    def to_boolean(self, df, list_of_to_boolean):
+    def to_boolean(self, df, list_of_to_boolean): #MOVED
         '''
         Goes from a numerical to a boolean pandas type
         '''
@@ -191,7 +190,7 @@ class DataTransform:
             df[i] = df[i].astype("bool")
         return df
     
-    def to_float(self, df, list_of_to_float):
+    def to_float(self, df, list_of_to_float): #MOVED
         '''
         Goes from int to float
         '''
@@ -199,7 +198,7 @@ class DataTransform:
             df[i] = df[i].astype("float")
         return df
     
-    def to_int(self, df, list_of_to_int):
+    def to_int(self, df, list_of_to_int): #MOVED
         '''
         Goes from float to int
         '''
@@ -207,7 +206,7 @@ class DataTransform:
             df[i] = df[i].astype("int")
         return df
     
-    def convert_dates_to_proper_format(self, df, dates_to_convert):
+    def convert_dates_to_proper_format(self, df, dates_to_convert): #MOVED
         '''
         Converts dates to the proper format
         '''

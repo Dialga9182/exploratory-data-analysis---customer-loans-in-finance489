@@ -1,3 +1,6 @@
+import pandas as pd
+
+
 class DataTransform:
     '''
     This class holds methods which, when called, will
@@ -38,7 +41,7 @@ class DataTransform:
         Converts dates to the proper format
 
     '''
-    def __init__(self): #TODO:make it a variable and use less self.variables
+    def __init__(self):
         '''
         Initialiser.
         
