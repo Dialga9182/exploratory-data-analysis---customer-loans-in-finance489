@@ -85,3 +85,5 @@ class RDSDatabaseConnector:
         #print(column_names)'''
         return df
 
+if __name__ == '__main__':
+    pass

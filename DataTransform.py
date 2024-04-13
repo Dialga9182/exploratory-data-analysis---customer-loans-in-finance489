@@ -109,3 +109,5 @@ class DataTransform:
             df[element] = pd.to_datetime(df[element])
         return df
 
+if __name__ == '__main__':
+    pass

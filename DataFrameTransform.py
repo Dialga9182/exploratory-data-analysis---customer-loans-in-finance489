@@ -123,3 +123,5 @@ class DataFrameTransform:
         print('Number of capped outliers', (len(df)-len(df_capped_by_limits)))
         return df_capped_by_limits
 
+if __name__ == '__main__':
+    pass

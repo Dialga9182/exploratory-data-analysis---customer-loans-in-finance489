@@ -31,3 +31,6 @@ def amount_of_nulls_and_column_drop(df):
             print(f"Dropping column '{element}' with non-null percentage {percentage_non_null:.2f}%")
             df.drop(element, axis=1, inplace=True)
     return df
+
+if __name__ == '__main__':
+    pass
