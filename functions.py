@@ -22,12 +22,12 @@ def amount_of_nulls_and_column_drop(df):
     Parameters:
     -----------
     '''
-    for i in df:
-        non_null_count = df[i].count()
+    for element in df:
+        non_null_count = df[element].count()
         total_count = df.shape[0]
         percentage_non_null = (non_null_count / total_count) * 100
-        print(i, ': Non-nulls:', non_null_count, 'Non-Null Percentage:', percentage_non_null, '%')
+        print(element, ': Non-nulls:', non_null_count, 'Non-Null Percentage:', percentage_non_null, '%')
         if percentage_non_null < 80: # If non-nulls < 80% of total dataset, drop column
-            print(f"Dropping column '{i}' with non-null percentage {percentage_non_null:.2f}%")
-            df.drop(i, axis=1, inplace=True)
+            print(f"Dropping column '{element}' with non-null percentage {percentage_non_null:.2f}%")
+            df.drop(element, axis=1, inplace=True)
     return df

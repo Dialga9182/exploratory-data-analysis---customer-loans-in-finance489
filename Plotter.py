@@ -15,9 +15,9 @@ class Plotter:
     
     def skew_correction(self, df):
         list_for_skew = ['loan_amount', 'funded_amount', 'funded_amount_inv', 'instalment', 'open_accounts', 'total_accounts','out_prncp','out_prncp_inv', 'total_payment', 'total_payment_inv', 'total_rec_prncp', 'total_rec_int', 'last_payment_amount']
-        for i in list_for_skew:
-            print(i)
-            print(skew(df[i]))
+        for element in list_for_skew:
+            print(element)
+            print(skew(df[element]))
 
         for column in list_for_skew: 
            df[column], _ = yeojohnson(df[column])
@@ -34,8 +34,8 @@ class Plotter:
     def plot_boxplots(self, df, columns):
         plt.figure(figsize=(15, 8))
 
-        for i, col in enumerate(columns, 1):
-            plt.subplot(1, len(columns), i)
+        for element, col in enumerate(columns, 1):
+            plt.subplot(1, len(columns), element)
             sns.boxplot(y=df[col])
             plt.title(f'Boxplot of {col}')
             plt.ylabel(col)

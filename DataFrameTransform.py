@@ -27,23 +27,23 @@ class DataFrameTransform:
     #Z-Score Method - VIDEO VERSION
     # trimming - delete the outlier data - from video
     def z_score_trim_vidver(self, df, columns):
-        for i in df[(columns)]:
-            upper_limit = df[i].mean() + 3*df[i].std()
-            lower_limit = df[i].mean() - 3*df[i].std()
-            df_z_score_vid_trim = df.loc[(df[i]<upper_limit) & (df[i]>lower_limit)]
+        for element in df[(columns)]:
+            upper_limit = df[element].mean() + 3*df[element].std()
+            lower_limit = df[element].mean() - 3*df[element].std()
+            df_z_score_vid_trim = df.loc[(df[element]<upper_limit) & (df[element]>lower_limit)]
         print(len(df)-len(df_z_score_vid_trim), 'outliers removed using zscore with vid trimming method')
         #plot_boxplots(df_z_score_vid_trim, columns)
         return df_z_score_vid_trim
 
     def z_score_cap_vidver(self, df, columns):
         df_z_score_vid_capping = df.copy()
-        for i in df[(columns)]:
-            upper_limit = df[i].mean() + 3*df[i].std()
-            lower_limit = df[i].mean() - 3*df[i].std()
+        for element in df[(columns)]:
+            upper_limit = df[element].mean() + 3*df[element].std()
+            lower_limit = df[element].mean() - 3*df[element].std()
             
             #the before
-            df_z_score_vid_capping.loc[df_z_score_vid_capping[i]>upper_limit, i] = upper_limit
-            df_z_score_vid_capping.loc[df_z_score_vid_capping[i]<lower_limit, i] = lower_limit
+            df_z_score_vid_capping.loc[df_z_score_vid_capping[element]>upper_limit, element] = upper_limit
+            df_z_score_vid_capping.loc[df_z_score_vid_capping[element]<lower_limit, element] = lower_limit
         print(len(df)-len(df_z_score_vid_capping), 'outliers removed using zscore with vid capping method')
         #plot_boxplots(df_z_score_vid_capping, columns)
         return df_z_score_vid_capping
@@ -54,12 +54,12 @@ class DataFrameTransform:
     #Z-Score Method - NOTEBOOK VERSION
     def create_z_score_df(self, df, columns):
         df_with_zscore = df.copy() # new dataframe is a copy of old dataframe
-        for i in df_with_zscore[(columns)]:
-            #print(i)
-            #print(np.mean(df_with_zscore[i]))
-            mean_of_col = np.mean(df_with_zscore[i])
-            std_of_col = np.std(df_with_zscore[i])
-            z_scores = ((df_with_zscore[i] - mean_of_col) / std_of_col)
+        for element in df_with_zscore[(columns)]:
+            #print(element)
+            #print(np.mean(df_with_zscore[element]))
+            mean_of_col = np.mean(df_with_zscore[element])
+            std_of_col = np.std(df_with_zscore[element])
+            z_scores = ((df_with_zscore[element] - mean_of_col) / std_of_col)
         df_with_zscore['z_scores'] = z_scores
         return df_with_zscore
 
@@ -82,8 +82,8 @@ class DataFrameTransform:
         df_capped_by_z_score = df_with_zscore.copy()
         #print('Before Capping:\n', df_capped_by_z_score[(columns)].skew())
         #plot_boxplots(df_capped_by_z_score, columns)
-        for i in df_capped_by_z_score[(columns)]:
-            replace_by_z_score(df_capped_by_z_score, i)
+        for element in df_capped_by_z_score[(columns)]:
+            replace_by_z_score(df_capped_by_z_score, element)
         return df_capped_by_z_score
         #print('After Capping:\n', (df_capped_by_z_score[(columns)].skew()))
         #plot_boxplots(df_capped_by_z_score, columns)
@@ -91,34 +91,34 @@ class DataFrameTransform:
 
     # IQR Method - from video, same as from notebook
     def get_upper_limit(self, df, columns):
-        for i in df[(columns)]:
-            q1 = df[i].quantile(0.25)
-            q3 = df[i].quantile(0.75)
+        for element in df[(columns)]:
+            q1 = df[element].quantile(0.25)
+            q3 = df[element].quantile(0.75)
         IQR = q3-q1
         upper_limit = q3 + (1.5 * IQR)
         return upper_limit
     
     def get_lower_limit(self, df, columns):
-        for i in df[(columns)]:
-            q1 = df[i].quantile(0.25)
-            q3 = df[i].quantile(0.75)
+        for element in df[(columns)]:
+            q1 = df[element].quantile(0.25)
+            q3 = df[element].quantile(0.75)
         IQR = q3-q1
         lower_limit = q1 - (1.5 * IQR)
         return lower_limit
 
     def trim_by_iqr_limits(self, df, columns):
         df_untrimmed_by_iqr = df.copy()
-        for i in df_untrimmed_by_iqr[(columns)]:
-            df_trimmed_by_iqr = df_untrimmed_by_iqr.loc[(df_untrimmed_by_iqr[i] > self.get_lower_limit(df, columns)) & (df_untrimmed_by_iqr[i] < self.get_upper_limit(df, columns))]
+        for element in df_untrimmed_by_iqr[(columns)]:
+            df_trimmed_by_iqr = df_untrimmed_by_iqr.loc[(df_untrimmed_by_iqr[element] > self.get_lower_limit(df, columns)) & (df_untrimmed_by_iqr[element] < self.get_upper_limit(df, columns))]
         print('Number of trimmed outliers:', (len(df_untrimmed_by_iqr) - len(df_trimmed_by_iqr)))
         return df_trimmed_by_iqr
 
     def cap_by_limits(self, df, columns):
         df_uncapped = df.copy()
-        for i in df[(columns)]:
-            df_uncapped.loc[df_uncapped[i]>self.get_upper_limit(df, columns), i] = self.get_upper_limit(df, columns)
-            df_uncapped.loc[df_uncapped[i]<self.get_lower_limit(df, columns), i] = self.get_lower_limit(df, columns)
-            outliers = df_uncapped.loc[(df[i] < self.get_lower_limit(df, columns)) & (df[i] > self.get_upper_limit(df, columns))]
+        for element in df[(columns)]:
+            df_uncapped.loc[df_uncapped[element]>self.get_upper_limit(df, columns), element] = self.get_upper_limit(df, columns)
+            df_uncapped.loc[df_uncapped[element]<self.get_lower_limit(df, columns), element] = self.get_lower_limit(df, columns)
+            outliers = df_uncapped.loc[(df[element] < self.get_lower_limit(df, columns)) & (df[element] > self.get_upper_limit(df, columns))]
         df_capped_by_limits = df_uncapped
         print('Number of capped outliers', (len(df)-len(df_capped_by_limits)))
         return df_capped_by_limits

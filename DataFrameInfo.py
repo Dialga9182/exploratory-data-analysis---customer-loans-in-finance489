@@ -73,15 +73,15 @@ class DataFrameInfo:
         '''
         Generate a count/percentage count of NULL values in each column
         '''
-        for i in df:
-            non_null_count = df[i].count()
+        for element in df:
+            non_null_count = df[element].count()
             total_count = df.shape[0]
             percentage_non_null = (non_null_count / total_count) * 100
-            print(i, ': Non-nulls:', non_null_count, 'Non-Null Percentage:', percentage_non_null, '%')
+            print(element, ': Non-nulls:', non_null_count, 'Non-Null Percentage:', percentage_non_null, '%')
             #determine a percentage of nulls that is acceptable
             #if non-nulls < 80% of total dataset, drop column
-            #if (((df[i].isnull().count())/(df.shape[0]))*100) < 80:
-                #df.drop(i, index = 1)
+            #if (((df[element].isnull().count())/(df.shape[0]))*100) < 80:
+                #df.drop(element, index = 1)
         return df
     '''
     should probably have sorted out a few lists regarding numeric, non-numeric,

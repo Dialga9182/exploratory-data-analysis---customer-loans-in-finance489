@@ -24,7 +24,7 @@ class DataTransform:
         When called, will remove any symbols which
         are not deemed necessary for our EDA goals.
         Must accept arguments which go on to
-        specify which symbols i.e., columns are
+        specify which symbols element.e., columns are
         to be removed.
     to_categorical()
         When called, will convert column values
@@ -56,15 +56,15 @@ class DataTransform:
         When called, will remove any symbols which
         are not deemed necessary for our EDA goals.
         Must accept arguments which go on to
-        specify which symbols i.e., columns are
+        specify which symbols element.e., columns are
         to be removed.
         '''
         #symbols = str(input('separate by spaces which columns are to be dropped: ')).split()
         print('These are the symbols that will be dropped: ',symbols)
         df = df.drop(labels=symbols, axis=1, )
         remaining_symbols = []
-        for i in df:
-            remaining_symbols.append(i)
+        for element in df:
+            remaining_symbols.append(element)
         print('These are the remaining symbols: ', remaining_symbols)
         return df
     
@@ -73,39 +73,39 @@ class DataTransform:
         When called, will convert column values
         to a categorical form.
         '''
-        for i in list_of_to_categorical:
-            df[i] = df[i].astype("category")
+        for element in list_of_to_categorical:
+            df[element] = df[element].astype("category")
         return df
     
     def to_boolean(self, df, list_of_to_boolean):
         '''
         Goes from a numerical to a boolean pandas type
         '''
-        for i in list_of_to_boolean:
-            df[i] = df[i].astype("bool")
+        for element in list_of_to_boolean:
+            df[element] = df[element].astype("bool")
         return df
     
     def to_float(self, df, list_of_to_float):
         '''
         Goes from int to float
         '''
-        for i in list_of_to_float:
-            df[i] = df[i].astype("float")
+        for element in list_of_to_float:
+            df[element] = df[element].astype("float")
         return df
     
     def to_int(self, df, list_of_to_int):
         '''
         Goes from float to int
         '''
-        for i in list_of_to_int:
-            df[i] = df[i].astype("int")
+        for element in list_of_to_int:
+            df[element] = df[element].astype("int")
         return df
     
     def convert_dates_to_proper_format(self, df, dates_to_convert):
         '''
         Converts dates to the proper format
         '''
-        for i in dates_to_convert:
-            df[i] = pd.to_datetime(df[i])
+        for element in dates_to_convert:
+            df[element] = pd.to_datetime(df[element])
         return df
 
