@@ -55,7 +55,6 @@ class RDSDatabaseConnector:
         self.database = credentials['RDS_DATABASE']
         self.port = credentials['RDS_PORT']
         
-    
     def initialise_engine_and_extract_data(self):
         '''
         Initialises the engine, extracts the
