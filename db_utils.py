@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 import seaborn as sns
 import numpy as np
 
-def function_to_load_credentials():
+def function_to_load_credentials(): #HAS BEEN MOVED TO functions.py 13-04-2024-15:00
     '''
     Creates a python object from a YAML file.
     
@@ -312,7 +312,7 @@ class DataFrameInfo:
     '''
 
 
-def amount_of_nulls_and_column_drop(df):
+def amount_of_nulls_and_column_drop(df): #HAS BEEN MOVED TO functions.py 13-04-2024-15:00
     '''
     This function prints out the column names
     and the percentage of non-nulls in that column.
@@ -325,11 +325,7 @@ def amount_of_nulls_and_column_drop(df):
         total_count = df.shape[0]
         percentage_non_null = (non_null_count / total_count) * 100
         print(i, ': Non-nulls:', non_null_count, 'Non-Null Percentage:', percentage_non_null, '%')
-        
-        #print(i, ':', 'Non-nulls: ', (df[i].isnull().count()), 'Non-Null= ', (((df[i].isnull().count())/(df.shape[0]))*100),'%')
-        #determine a percentage of nulls that is acceptable
-        #if non-nulls < 80% of total dataset, drop column
-        if percentage_non_null < 80:
+        if percentage_non_null < 80: # If non-nulls < 80% of total dataset, drop column
             print(f"Dropping column '{i}' with non-null percentage {percentage_non_null:.2f}%")
             df.drop(i, axis=1, inplace=True)
     return df

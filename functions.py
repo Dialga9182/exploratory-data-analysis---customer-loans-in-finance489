@@ -16,15 +16,18 @@ def function_to_load_credentials():
 
 def amount_of_nulls_and_column_drop(df):
     '''
-    desc
+    This function prints out the column names
+    and the percentage of non-nulls in that column.
     
     Parameters:
     -----------
     '''
     for i in df:
-        print(i, ':', 'Non-nulls: ', (df[i].isnull().count()), 'Non-Null= ', (((df[i].isnull().count())/(df.shape[0]))*100),'%')
-        #determine a percentage of nulls that is acceptable
-        #if non-nulls < 80% of total dataset, drop column
-        if (((df[i].isnull().count())/(df.shape[0]))*100) < 101:
-            df.drop(i, index = 1)
+        non_null_count = df[i].count()
+        total_count = df.shape[0]
+        percentage_non_null = (non_null_count / total_count) * 100
+        print(i, ': Non-nulls:', non_null_count, 'Non-Null Percentage:', percentage_non_null, '%')
+        if percentage_non_null < 80: # If non-nulls < 80% of total dataset, drop column
+            print(f"Dropping column '{i}' with non-null percentage {percentage_non_null:.2f}%")
+            df.drop(i, axis=1, inplace=True)
     return df
