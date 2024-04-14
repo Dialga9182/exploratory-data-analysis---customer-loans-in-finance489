@@ -41,6 +41,7 @@ class DataTransform:
         Converts dates to the proper format
 
     """
+    
     def __init__(self):
         """
         Initialiser.

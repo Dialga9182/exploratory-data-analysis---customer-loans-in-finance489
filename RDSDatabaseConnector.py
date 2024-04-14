@@ -39,6 +39,7 @@ class RDSDatabaseConnector:
     load_dataframe_from_csv(self)
         Loads that dataframe from a csv file.
     """
+    
     def __init__(self, credentials = function_to_load_credentials()):
         """
         Initialiser.

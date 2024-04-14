@@ -6,6 +6,7 @@ class DataFrameTransform:
     This class imputes data where necessary
     and removes rows where necessary. 
     """
+    
     def __init__(self):
         """DOCSTRING"""
         pass
