@@ -1,7 +1,7 @@
 import yaml
 
 def function_to_load_credentials():
-    """
+    """Create a python 
     Creates a python object from a YAML file.
     
     Parameters:

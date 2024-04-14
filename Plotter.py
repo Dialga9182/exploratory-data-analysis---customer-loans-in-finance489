@@ -5,7 +5,8 @@ import seaborn as sns
 
 
 class Plotter:
-    """DOCSTRING"""
+    """_summary_
+    """
     
     def __init__(self):
         pass
