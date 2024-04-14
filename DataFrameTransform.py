@@ -2,20 +2,24 @@ import numpy as np
 
 
 class DataFrameTransform:
-    """
+    """Imput data where necessary.
     This class imputes data where necessary
     and removes rows where necessary. 
     """
     
     def __init__(self):
-        """DOCSTRING"""
-        pass
+        """Initialise."""
     
     def impute(self, df):
-        """
+        """Impute the average when the data is missing.
         This method imputes data where necessary
         and removes rows where necessary. 
         
+        Args:
+            df (_type_): _description_
+
+        Returns:
+            _type_: _description_
         """
         df['funded_amount'] = df['funded_amount'].fillna(df['funded_amount'].mean())
         df['int_rate'] = df['int_rate'].fillna(df['int_rate'].mean())
@@ -25,9 +29,9 @@ class DataFrameTransform:
         df = df.dropna(subset=['last_payment_date'], inplace=False)
         #df = df.dropna(subset=['last_payment_date'], inplace=False)
         return df
-    #Z-Score Method - VIDEO VERSION
-    # trimming - delete the outlier data - from video
+
     def z_score_trim_vidver(self, df, columns):
+        """Trim outlier data, return DataFrame object"""
         for element in df[(columns)]:
             upper_limit = df[element].mean() + 3*df[element].std()
             lower_limit = df[element].mean() - 3*df[element].std()
@@ -37,6 +41,15 @@ class DataFrameTransform:
         return df_z_score_vid_trim
 
     def z_score_cap_vidver(self, df, columns):
+        """Cap the value of outlier data.
+
+        Args:
+            df (_type_): _description_
+            columns (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         df_z_score_vid_capping = df.copy()
         for element in df[(columns)]:
             upper_limit = df[element].mean() + 3*df[element].std()
@@ -47,13 +60,22 @@ class DataFrameTransform:
             df_z_score_vid_capping.loc[df_z_score_vid_capping[element]<lower_limit, element] = lower_limit
         print(len(df)-len(df_z_score_vid_capping), 'outliers removed using zscore with vid capping method')
         #plot_boxplots(df_z_score_vid_capping, columns)
+        #actually, len-len should be zero as they are now within the limits?
+        # number of at limit items should increase but I dont know how to express that.
+        #TODO:
         return df_z_score_vid_capping
-
-    #actually, len-len should be zero as they are now within the limits?
-    # number of at limit items should increase but I dont know how to express that
 
     #Z-Score Method - NOTEBOOK VERSION
     def create_z_score_df(self, df, columns):
+        """Create a Z-Score.
+
+        Args:
+            df (_type_): _description_
+            columns (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         df_with_zscore = df.copy() # new dataframe is a copy of old dataframe
         for element in df_with_zscore[(columns)]:
             #print(element)
@@ -65,12 +87,30 @@ class DataFrameTransform:
         return df_with_zscore
 
     def trim_by_z_score(self, df, columns):
+        """Trim the data according to the Z-Score.
+
+        Args:
+            df (_type_): _description_
+            columns (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         df_with_zscore = self.create_z_score_df(df, columns)
         df_trimmed_by_z_score = df_with_zscore.loc[(df_with_zscore['z_scores']> -3) & (df_with_zscore['z_scores']<3)]
         print('Number of outliers trimmed: ', (len(df_with_zscore)-len(df_trimmed_by_z_score)))
         return df_trimmed_by_z_score
 
     def cap_by_z_score(self, df, columns):
+        """Cap the data according to the Z-Score.
+
+        Args:
+            df (_type_): _description_
+            columns (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         df_with_zscore = self.create_z_score_df(df, columns)
         def replace_by_z_score(dataframe, df_column, threshold=3): #caps a df
             mean = dataframe[df_column].mean()
@@ -92,6 +132,15 @@ class DataFrameTransform:
 
     # IQR Method - from video, same as from notebook
     def get_upper_limit(self, df, columns):
+        """Get upper limit.
+
+        Args:
+            df (_type_): _description_
+            columns (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         for element in df[(columns)]:
             q1 = df[element].quantile(0.25)
             q3 = df[element].quantile(0.75)
@@ -100,6 +149,15 @@ class DataFrameTransform:
         return upper_limit
     
     def get_lower_limit(self, df, columns):
+        """Get lower limit.
+
+        Args:
+            df (_type_): _description_
+            columns (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         for element in df[(columns)]:
             q1 = df[element].quantile(0.25)
             q3 = df[element].quantile(0.75)
@@ -108,6 +166,15 @@ class DataFrameTransform:
         return lower_limit
 
     def trim_by_iqr_limits(self, df, columns):
+        """Trim data by IQR limits.
+
+        Args:
+            df (_type_): _description_
+            columns (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         df_untrimmed_by_iqr = df.copy()
         for element in df_untrimmed_by_iqr[(columns)]:
             df_trimmed_by_iqr = df_untrimmed_by_iqr.loc[(df_untrimmed_by_iqr[element] > self.get_lower_limit(df, columns)) & (df_untrimmed_by_iqr[element] < self.get_upper_limit(df, columns))]
@@ -115,6 +182,15 @@ class DataFrameTransform:
         return df_trimmed_by_iqr
 
     def cap_by_limits(self, df, columns):
+        """Cap data by limits.
+
+        Args:
+            df (_type_): _description_
+            columns (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         df_uncapped = df.copy()
         for element in df[(columns)]:
             df_uncapped.loc[df_uncapped[element]>self.get_upper_limit(df, columns), element] = self.get_upper_limit(df, columns)
