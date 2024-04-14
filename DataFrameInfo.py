@@ -1,5 +1,5 @@
 class DataFrameInfo:
-    """
+    """Perform EDA transformations on the data.
     Performs EDA transformations on the data
     
     Parameters:
@@ -23,8 +23,9 @@ class DataFrameInfo:
     generate_a_count_slash_percentage_count_of_NULL_values_in_each_column()
         Generate a count/percentage count of NULL values in each column
     """
+    
     def __init__(self):
-        """
+        """Initialise.
         An instance method for DataFrameInfo
         
         Parameters:
@@ -34,15 +35,25 @@ class DataFrameInfo:
         pass
     
     def describe_all_columns_to_check_their_datatypes(self, df):
-        """
-        This function describes all columns in the DataFrame to check their data types
+        """Describe all columns in the DataFrame to check their data types.
+
+        Args:
+            df (_type_): _description_
+
+        Returns:
+            _type_: _description_
         """
         print(df.dtypes)
         return df
     
     def extract_statistical_values_median_stddev_mean_from_cols_and_dataframe(self, df):
-        """
-        Extract statistical values: median, standard deviation and mean from the columns and the DataFrame
+        """Extract statistical values: median, standard deviation and mean from the columns and the DataFrame.
+
+        Args:
+            df (_type_): _description_
+
+        Returns:
+            _type_: _description_
         """
         print(df.describe()) # gives everything but the median.
         print('Medians for each column: \n')
@@ -50,23 +61,38 @@ class DataFrameInfo:
         return df
     
     def count_distinct_values_in_categorical_columns(self, df):
-        """
-        Count distinct values in categorical columns
+        """Count distinct values in categorical columns.
+
+        Args:
+            df (_type_): _description_
+
+        Returns:
+            _type_: _description_
         """
         print(df.nunique())
         return df
     
     def print_out_the_shape_of_the_dataframe(self, df):
-        """
-        Print out the shape of the DataFrame
+        """Print out the shape of the DataFrame.
+
+        Args:
+            df (_type_): _description_
+
+        Returns:
+            _type_: _description_
         """
         print(df.shape)
         return df
     
     def generate_a_count_slash_percentage_count_of_NULL_values_in_each_column(self, df):
-        """
-        Generate a count/percentage count of NULL values in each column
-        """
+        """Generate a count/percentage count of NULL values in each column.
+
+        Args:
+            df (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """        """"""
         for element in df:
             non_null_count = df[element].count()
             total_count = df.shape[0]
@@ -77,6 +103,7 @@ class DataFrameInfo:
             #if (((df[element].isnull().count())/(df.shape[0]))*100) < 80:
                 #df.drop(element, index = 1)
         return df
+    
     """
     should probably have sorted out a few lists regarding numeric, non-numeric,
     categorical, datetimes etc for use as a copy-paste tool.
