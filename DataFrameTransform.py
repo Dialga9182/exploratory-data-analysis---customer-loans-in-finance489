@@ -2,20 +2,20 @@ import numpy as np
 
 
 class DataFrameTransform:
-    '''
+    """
     This class imputes data where necessary
     and removes rows where necessary. 
-    '''
+    """
     def __init__(self):
-        '''DOCSTRING'''
+        """DOCSTRING"""
         pass
     
     def impute(self, df):
-        '''
+        """
         This method imputes data where necessary
         and removes rows where necessary. 
         
-        '''
+        """
         df['funded_amount'] = df['funded_amount'].fillna(df['funded_amount'].mean())
         df['int_rate'] = df['int_rate'].fillna(df['int_rate'].mean())
         df['term'] = df['term'].fillna(df['term'].mode()[0])
