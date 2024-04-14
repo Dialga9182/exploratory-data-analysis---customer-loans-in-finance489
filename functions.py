@@ -1,7 +1,7 @@
 import yaml
 
 def function_to_load_credentials():
-    """Create a python 
+    """Create a python object from a YAML file.
     Creates a python object from a YAML file.
     
     Parameters:
@@ -15,7 +15,7 @@ def function_to_load_credentials():
     return credentials
 
 def amount_of_nulls_and_column_drop(df):
-    """
+    """Print out the column names and the percentage of non-nulls in that column.
     This function prints out the column names
     and the percentage of non-nulls in that column.
     
