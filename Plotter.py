@@ -2,6 +2,7 @@ import missingno as msno
 from scipy.stats import skew, yeojohnson
 from matplotlib import pyplot as plt
 import seaborn as sns
+import pandas as pd
 
 
 class Plotter:
@@ -13,7 +14,7 @@ class Plotter:
         """
         pass
     
-    def generate_a_plot_for_nulls(self, df):
+    def generate_a_plot_for_nulls(self, df: pd.core.frame.DataFrame) -> pd.core.frame.DataFrame:
         """Generate a plot for nulls.
 
         Args:
@@ -25,7 +26,7 @@ class Plotter:
         msno.matrix(df)
         return df
     
-    def skew_correction(self, df):
+    def skew_correction(self, df: pd.core.frame.DataFrame) -> pd.core.frame.DataFrame:
         """Correct the skew on a dataframe.
 
         Args:
@@ -48,15 +49,7 @@ class Plotter:
         'total_rec_int', 'last_payment_amount']].hist(figsize=(20,15))
         return df
     
-    def plotting_outliers(self, df):
-        """Plot outliers.
-
-        Args:
-            df (_type_): _description_
-        """
-        pass
-    
-    def plot_boxplots(self, df, columns):
+    def plot_boxplots(self, df: pd.core.frame.DataFrame, columns: list) -> None:
         """Plot boxplots.
 
         Args:
