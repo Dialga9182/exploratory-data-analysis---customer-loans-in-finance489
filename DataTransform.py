@@ -2,7 +2,7 @@ import pandas as pd
 
 
 class DataTransform:
-    """
+    """Transform certain column formats.
     This class holds methods which, when called, will
     transform the formats of certain columns in a table.
     
@@ -43,7 +43,7 @@ class DataTransform:
     """
     
     def __init__(self):
-        """
+        """Initialise.
         Initialiser.
         
         df: DataFrame
@@ -53,7 +53,7 @@ class DataTransform:
         pass
 
     def excess_symbol_removal(self, df, symbols):
-        """
+        """Remove specific columns.
         When called, will remove any symbols which
         are not deemed necessary for our EDA goals.
         Must accept arguments which go on to
@@ -70,7 +70,7 @@ class DataTransform:
         return df
     
     def to_categorical(self, df, list_of_to_categorical):
-        """
+        """Convert column formats to dtype Categorical.
         When called, will convert column values
         to a categorical form.
         """
@@ -79,7 +79,7 @@ class DataTransform:
         return df
     
     def to_boolean(self, df, list_of_to_boolean):
-        """
+        """Convert column formats to dtype Boolean.
         Goes from a numerical to a boolean pandas type
         """
         for element in list_of_to_boolean:
@@ -87,7 +87,7 @@ class DataTransform:
         return df
     
     def to_float(self, df, list_of_to_float):
-        """
+        """Convert column formats to dtype Float.
         Goes from int to float
         """
         for element in list_of_to_float:
@@ -95,7 +95,7 @@ class DataTransform:
         return df
     
     def to_int(self, df, list_of_to_int):
-        """
+        """Convert column formats to dtype Int.
         Goes from float to int
         """
         for element in list_of_to_int:
@@ -103,7 +103,7 @@ class DataTransform:
         return df
     
     def convert_dates_to_proper_format(self, df, dates_to_convert):
-        """
+        """Convert column formats to dtype DateTime.
         Converts dates to the proper format
         """
         for element in dates_to_convert:
