@@ -37,7 +37,7 @@ class DataFrameInfo:
         """
         pass
     
-    def describe_all_columns_to_check_their_datatypes(self, df:pd.core.frame.DataFrame):
+    def describe_all_columns_to_check_their_datatypes(self, df:pd.core.frame.DataFrame) -> pd.core.frame.DataFrame:
         """Describe all columns in the DataFrame to check their data types.
 
         Args:
@@ -49,7 +49,7 @@ class DataFrameInfo:
         print(df.dtypes)
         return df
     
-    def extract_statistical_values_median_stddev_mean_from_cols_and_dataframe(self, df:pd.core.frame.DataFrame):
+    def extract_statistical_values_median_stddev_mean_from_cols_and_dataframe(self, df:pd.core.frame.DataFrame) -> pd.core.frame.DataFrame:
         """Extract statistical values: median, standard deviation and mean from the columns and the DataFrame.
 
         Args:
@@ -63,7 +63,7 @@ class DataFrameInfo:
         print(df.median(numeric_only=True))
         return df
     
-    def count_distinct_values_in_categorical_columns(self, df:pd.core.frame.DataFrame):
+    def count_distinct_values_in_categorical_columns(self, df:pd.core.frame.DataFrame) -> pd.core.frame.DataFrame:
         """Count distinct values in categorical columns.
 
         Args:
@@ -75,7 +75,7 @@ class DataFrameInfo:
         print(df.nunique())
         return df
     
-    def print_out_the_shape_of_the_dataframe(self, df:pd.core.frame.DataFrame):
+    def print_out_the_shape_of_the_dataframe(self, df:pd.core.frame.DataFrame) -> pd.core.frame.DataFrame:
         """Print out the shape of the DataFrame.
 
         Args:
@@ -87,7 +87,7 @@ class DataFrameInfo:
         print(df.shape)
         return df
     
-    def generate_a_count_slash_percentage_count_of_NULL_values_in_each_column(self, df:pd.core.frame.DataFrame):
+    def generate_a_count_slash_percentage_count_of_NULL_values_in_each_column(self, df:pd.core.frame.DataFrame) -> pd.core.frame.DataFrame:
         """Generate a count/percentage count of NULL values in each column.
 
         Args:
@@ -97,9 +97,9 @@ class DataFrameInfo:
             _type_: _description_
         """        """"""
         for element in df:
-            non_null_count: pd.Series = df[element].count()
-            total_count: pd.Series = df.shape[0]
-            percentage_non_null: float = (non_null_count / total_count) * 100
+            non_null_count = df[element].count()
+            total_count = df.shape[0]
+            percentage_non_null = (non_null_count / total_count) * 100
             print(element, ': Non-nulls:', non_null_count, 'Non-Null Percentage:', percentage_non_null, '%')
         return df
     
