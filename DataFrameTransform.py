@@ -1,5 +1,5 @@
 import numpy as np
-
+import pandas as pd
 
 class DataFrameTransform:
     """Imput data where necessary.
@@ -10,7 +10,7 @@ class DataFrameTransform:
     def __init__(self):
         """Initialise."""
     
-    def impute(self, df):
+    def impute(self, df: pd.core.frame.DataFrame) -> pd.core.frame.DataFrame:
         """Impute the average when the data is missing.
         This method imputes data where necessary
         and removes rows where necessary. 
@@ -30,7 +30,7 @@ class DataFrameTransform:
         #df = df.dropna(subset=['last_payment_date'], inplace=False)
         return df
 
-    def z_score_trim_vidver(self, df, columns):
+    def z_score_trim_vidver(self, df: pd.core.frame.DataFrame, columns: list) -> pd.core.frame.DataFrame:
         """Trim outlier data, return DataFrame object"""
         for element in df[(columns)]:
             upper_limit = df[element].mean() + 3*df[element].std()
@@ -40,7 +40,7 @@ class DataFrameTransform:
         #plot_boxplots(df_z_score_vid_trim, columns)
         return df_z_score_vid_trim
 
-    def z_score_cap_vidver(self, df, columns):
+    def z_score_cap_vidver(self, df: pd.core.frame.DataFrame, columns: list) -> pd.core.frame.DataFrame:
         """Cap the value of outlier data.
 
         Args:
@@ -66,7 +66,7 @@ class DataFrameTransform:
         return df_z_score_vid_capping
 
     #Z-Score Method - NOTEBOOK VERSION
-    def create_z_score_df(self, df, columns):
+    def create_z_score_df(self, df: pd.core.frame.DataFrame, columns: list) -> pd.core.frame.DataFrame:
         """Create a Z-Score.
 
         Args:
@@ -86,7 +86,7 @@ class DataFrameTransform:
         df_with_zscore['z_scores'] = z_scores
         return df_with_zscore
 
-    def trim_by_z_score(self, df, columns):
+    def trim_by_z_score(self, df: pd.core.frame.DataFrame, columns: list) -> pd.core.frame.DataFrame:
         """Trim the data according to the Z-Score.
 
         Args:
@@ -101,7 +101,7 @@ class DataFrameTransform:
         print('Number of outliers trimmed: ', (len(df_with_zscore)-len(df_trimmed_by_z_score)))
         return df_trimmed_by_z_score
 
-    def cap_by_z_score(self, df, columns):
+    def cap_by_z_score(self, df: pd.core.frame.DataFrame, columns: list) -> pd.core.frame.DataFrame:
         """Cap the data according to the Z-Score.
 
         Args:
@@ -131,7 +131,7 @@ class DataFrameTransform:
         #print('Number of Capped outliers:', (len(df)-len(df_capped_by_z_score)))
 
     # IQR Method - from video, same as from notebook
-    def get_upper_limit(self, df, columns):
+    def get_upper_limit(self, df: pd.core.frame.DataFrame, columns: list) -> float: 
         """Get upper limit.
 
         Args:
@@ -148,7 +148,7 @@ class DataFrameTransform:
         upper_limit = q3 + (1.5 * IQR)
         return upper_limit
     
-    def get_lower_limit(self, df, columns):
+    def get_lower_limit(self, df: pd.core.frame.DataFrame, columns: list) -> float:
         """Get lower limit.
 
         Args:
@@ -165,7 +165,7 @@ class DataFrameTransform:
         lower_limit = q1 - (1.5 * IQR)
         return lower_limit
 
-    def trim_by_iqr_limits(self, df, columns):
+    def trim_by_iqr_limits(self, df: pd.core.frame.DataFrame, columns: list) -> pd.core.frame.DataFrame:
         """Trim data by IQR limits.
 
         Args:
@@ -181,7 +181,7 @@ class DataFrameTransform:
         print('Number of trimmed outliers:', (len(df_untrimmed_by_iqr) - len(df_trimmed_by_iqr)))
         return df_trimmed_by_iqr
 
-    def cap_by_limits(self, df, columns):
+    def cap_by_limits(self, df: pd.core.frame.DataFrame, columns: list) -> pd.core.frame.DataFrame:
         """Cap data by limits.
 
         Args:
@@ -201,4 +201,7 @@ class DataFrameTransform:
         return df_capped_by_limits
 
 if __name__ == '__main__':
+    #col: list
+    #df: pd.core.frame.DataFrame
+    #
     pass
