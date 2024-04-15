@@ -52,7 +52,7 @@ class DataTransform:
         """
         pass
 
-    def excess_symbol_removal(self, df, symbols):
+    def excess_symbol_removal(self, df: pd.core.frame.DataFrame, symbols: str) -> pd.core.frame.DataFrame:
         """Remove specific columns.
         When called, will remove any symbols which
         are not deemed necessary for our EDA goals.
@@ -60,7 +60,7 @@ class DataTransform:
         specify which symbols element.e., columns are
         to be removed.
         """
-        #symbols = str(input('separate by spaces which columns are to be dropped: ')).split()
+        symbols = str(input('separate by spaces which columns are to be dropped: ')).split()
         print('These are the symbols that will be dropped: ',symbols)
         df = df.drop(labels=symbols, axis=1, )
         remaining_symbols = []
@@ -69,7 +69,7 @@ class DataTransform:
         print('These are the remaining symbols: ', remaining_symbols)
         return df
     
-    def to_categorical(self, df, list_of_to_categorical):
+    def to_categorical(self, df: pd.core.frame.DataFrame, list_of_to_categorical: list) -> pd.core.frame.DataFrame:
         """Convert column formats to dtype Categorical.
         When called, will convert column values
         to a categorical form.
@@ -78,7 +78,7 @@ class DataTransform:
             df[element] = df[element].astype("category")
         return df
     
-    def to_boolean(self, df, list_of_to_boolean):
+    def to_boolean(self, df: pd.core.frame.DataFrame, list_of_to_boolean: list) -> pd.core.frame.DataFrame:
         """Convert column formats to dtype Boolean.
         Goes from a numerical to a boolean pandas type
         """
@@ -86,7 +86,7 @@ class DataTransform:
             df[element] = df[element].astype("bool")
         return df
     
-    def to_float(self, df, list_of_to_float):
+    def to_float(self, df: pd.core.frame.DataFrame, list_of_to_float: list) -> pd.core.frame.DataFrame:
         """Convert column formats to dtype Float.
         Goes from int to float
         """
@@ -94,7 +94,7 @@ class DataTransform:
             df[element] = df[element].astype("float")
         return df
     
-    def to_int(self, df, list_of_to_int):
+    def to_int(self, df: pd.core.frame.DataFrame, list_of_to_int: list) -> pd.core.frame.DataFrame:
         """Convert column formats to dtype Int.
         Goes from float to int
         """
@@ -102,7 +102,7 @@ class DataTransform:
             df[element] = df[element].astype("int")
         return df
     
-    def convert_dates_to_proper_format(self, df, dates_to_convert):
+    def convert_dates_to_proper_format(self, df: pd.core.frame.DataFrame, dates_to_convert: list) -> pd.core.frame.DataFrame:
         """Convert column formats to dtype DateTime.
         Converts dates to the proper format
         """
