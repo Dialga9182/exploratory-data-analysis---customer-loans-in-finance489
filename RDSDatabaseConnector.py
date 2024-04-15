@@ -3,7 +3,7 @@ from functions import function_to_load_credentials
 from sqlalchemy import create_engine
 
 class RDSDatabaseConnector:
-    """
+    """Gather data from cloud database.
     Facilitates the gathering and storing of tabular data
     for the purposes of later processing and exploratory
     data analysis.
@@ -41,7 +41,7 @@ class RDSDatabaseConnector:
     """
     
     def __init__(self, credentials = function_to_load_credentials()):
-        """
+        """Initialise.
         Initialiser.
         
         Parameters:
@@ -57,7 +57,7 @@ class RDSDatabaseConnector:
         self.port = credentials['RDS_PORT']
         
     def initialise_engine_and_extract_data(self):
-        """
+        """Extract the data from the database, return DataFrame.
         Initialises the engine, extracts the
         data from the location where it is stored,
         and then saves that as a pandas dataframe.
@@ -69,14 +69,14 @@ class RDSDatabaseConnector:
         return df
     
     def save_dataframe_to_csv(self):
-        """
+        """Save a DataFrame to a CSV file.
         Saves that dataframe to a csv file.
         """
         df = self.initialise_engine_and_extract_data()
         df.to_csv('data.csv', index=False)
     
     def load_dataframe_from_csv(self):
-        """
+        """Load a DataFrame from a CSV file, return DataFrame.
         Loads that dataframe from a csv file.
         """
         df = pd.read_csv('data.csv')
