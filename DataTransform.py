@@ -52,7 +52,7 @@ class DataTransform:
         """
         pass
 
-    def excess_symbol_removal(self, df: pd.core.frame.DataFrame, symbols: str) -> pd.core.frame.DataFrame:
+    def excess_symbol_removal(self, df: pd.core.frame.DataFrame, symbols: list) -> pd.core.frame.DataFrame:
         """Remove specific columns.
         When called, will remove any symbols which
         are not deemed necessary for our EDA goals.
@@ -60,7 +60,7 @@ class DataTransform:
         specify which symbols element.e., columns are
         to be removed.
         """
-        symbols = str(input('separate by spaces which columns are to be dropped: ')).split()
+        #symbols = str(input('separate by spaces which columns are to be dropped: ')).split()
         print('These are the symbols that will be dropped: ',symbols)
         df = df.drop(labels=symbols, axis=1, )
         remaining_symbols = []
