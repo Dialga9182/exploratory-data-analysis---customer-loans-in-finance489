@@ -107,7 +107,7 @@ class DataTransform:
         Converts dates to the proper format
         """
         for element in dates_to_convert:
-            df[element] = pd.to_datetime(df[element])
+            df[element] = pd.to_datetime(df[element], format= "mixed")
         return df
 
 if __name__ == '__main__':
