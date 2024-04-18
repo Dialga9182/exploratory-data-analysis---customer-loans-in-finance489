@@ -102,12 +102,12 @@ class DataTransform:
             df[element] = df[element].astype("int")
         return df
     
-    def convert_dates_to_proper_format(self, df: pd.core.frame.DataFrame, dates_to_convert: list) -> pd.core.frame.DataFrame:
+    def convert_dates_to_proper_format(self, df: pd.core.frame.DataFrame, date_columns: list, format) -> pd.core.frame.DataFrame:
         """Convert column formats to dtype DateTime.
         Converts dates to the proper format
         """
-        for element in dates_to_convert:
-            df[element] = pd.to_datetime(df[element], format= "mixed")
+        for element in date_columns:
+            df[element] = pd.to_datetime(df[element], format = format)
         return df
 
 if __name__ == '__main__':
