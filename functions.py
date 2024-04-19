@@ -30,9 +30,8 @@ def display_suggested_drops(dataframe: pd.core.frame.DataFrame) -> pd.core.frame
         percentage_non_null = (non_null_count / total_count) * 100
         if percentage_non_null < float(acceptable_null_percentage): # If <condition> Drop column.
             suggested_drops.append(element)
-            #print(f"Suggest dropping column '{element}' with non-null percentage {percentage_non_null:.2f}%")
     print("Suggest dropping these columns: \n", suggested_drops) #suggests columns to be dropped
-    return suggested_drops
+    return acceptable_null_percentage
 
 def column_drop(dataframe: pd.core.frame.DataFrame, acceptable_null_percentage) -> pd.core.frame.DataFrame:
     dropped_columns = []
@@ -43,8 +42,8 @@ def column_drop(dataframe: pd.core.frame.DataFrame, acceptable_null_percentage) 
         if percentage_non_null < float(acceptable_null_percentage): # If <condition> Drop column.
             dataframe.drop(element, axis=1, inplace=True)
             dropped_columns.append(element)
-    print("Dropping columns: \n", dropped_columns)
-    return dataframe
+    print("Dropped columns: \n", dropped_columns)
+    return dataframe, dropped_columns
 
 if __name__ == '__main__':
     pass
