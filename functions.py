@@ -14,7 +14,7 @@ def function_to_load_credentials() -> dict:
         credentials = yaml.safe_load(f)
     return credentials
 
-def amount_of_nulls_and_column_drop(df: pd.core.frame.DataFrame) -> pd.core.frame.DataFrame:
+def display_suggested_drops(dataframe: pd.core.frame.DataFrame) -> pd.core.frame.DataFrame:
     """Print out the column names and the percentage of non-nulls in that column.
     This function prints out the column names
     and the percentage of non-nulls in that column.
@@ -22,15 +22,29 @@ def amount_of_nulls_and_column_drop(df: pd.core.frame.DataFrame) -> pd.core.fram
     Parameters:
     -----------
     """
-    for element in df:
-        non_null_count = df[element].count()
-        total_count = df.shape[0]
+    acceptable_null_percentage = input('Acceptable Null percentage per column?: ')
+    suggested_drops = []
+    for element in dataframe: #displays: element, non_null count, non_null%.
+        non_null_count = dataframe[element].count()
+        total_count = dataframe.shape[0]
         percentage_non_null = (non_null_count / total_count) * 100
-        print(element, ': Non-nulls:', non_null_count, 'Non-Null Percentage:', percentage_non_null, '%')
-        if percentage_non_null < 80: # If non-nulls < 80% of total dataset, drop column
-            print(f"Dropping column '{element}' with non-null percentage {percentage_non_null:.2f}%")
-            df.drop(element, axis=1, inplace=True)
-    return df
+        if percentage_non_null < float(acceptable_null_percentage): # If <condition> Drop column.
+            suggested_drops.append(element)
+            #print(f"Suggest dropping column '{element}' with non-null percentage {percentage_non_null:.2f}%")
+    print("Suggest dropping these columns: \n", suggested_drops) #suggests columns to be dropped
+    return suggested_drops
+
+def column_drop(dataframe: pd.core.frame.DataFrame, acceptable_null_percentage) -> pd.core.frame.DataFrame:
+    dropped_columns = []
+    for element in dataframe:
+        non_null_count = dataframe[element].count()
+        total_count = dataframe.shape[0]
+        percentage_non_null = (non_null_count / total_count) * 100
+        if percentage_non_null < float(acceptable_null_percentage): # If <condition> Drop column.
+            dataframe.drop(element, axis=1, inplace=True)
+            dropped_columns.append(element)
+    print("Dropping columns: \n", dropped_columns)
+    return dataframe
 
 if __name__ == '__main__':
     pass
