@@ -62,12 +62,16 @@ class DataTransform:
         """
         #symbols = str(input('separate by spaces which columns are to be dropped: ')).split()
         print('These are the symbols that will be dropped: ',symbols)
-        df = df.drop(labels=symbols, axis=1, )
+        for i in symbols:
+            df = df.drop(labels=i, axis=1, )
         remaining_symbols = []
         for element in df:
             remaining_symbols.append(element)
         print('These are the remaining symbols: ', remaining_symbols)
-        return df
+        symbols_removed = []
+        for i in symbols:
+            symbols_removed.append(i)
+        return df, symbols_removed
     
     def to_categorical(self, df: pd.core.frame.DataFrame, list_of_to_categorical: list) -> pd.core.frame.DataFrame:
         """Convert column formats to dtype Categorical.

@@ -14,7 +14,7 @@ def function_to_load_credentials() -> dict:
         credentials = yaml.safe_load(f)
     return credentials
 
-def display_suggested_drops(dataframe: pd.core.frame.DataFrame) -> pd.core.frame.DataFrame:
+def display_suggested_drops(dataframe: pd.core.frame.DataFrame, acceptable_null_percentage) -> pd.core.frame.DataFrame:
     """Print out the column names and the percentage of non-nulls in that column.
     This function prints out the column names
     and the percentage of non-nulls in that column.
@@ -22,7 +22,8 @@ def display_suggested_drops(dataframe: pd.core.frame.DataFrame) -> pd.core.frame
     Parameters:
     -----------
     """
-    acceptable_null_percentage = input('Acceptable Null percentage per column?: ')
+    if acceptable_null_percentage == None:
+        acceptable_null_percentage = input('Acceptable Null percentage per column?: ')
     suggested_drops = []
     for element in dataframe: #displays: element, non_null count, non_null%.
         non_null_count = dataframe[element].count()
