@@ -1,5 +1,6 @@
 import yaml
 import pandas as pd
+import numpy as np
 
 def function_to_load_credentials() -> dict:
     """Reads and returns credentials from YAML file.
@@ -45,6 +46,10 @@ def column_drop(dataframe: pd.core.frame.DataFrame, acceptable_null_percentage) 
             dropped_columns.append(element)
     print("Dropped columns: \n", dropped_columns)
     return dataframe, dropped_columns
+
+def create_new_column(dataframe: pd.core.frame.DataFrame, new_column: str)-> pd.core.frame.DataFrame:
+        dataframe[f'{new_column}'] = np.nan
+        return dataframe
 
 if __name__ == '__main__':
     pass
