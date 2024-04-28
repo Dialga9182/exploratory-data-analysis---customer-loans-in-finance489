@@ -6,12 +6,12 @@
 4. [File Structure of the Project](#file-structure-of-the-project)
 5. [License Information](#license-information)
 # Project Description
-TODO: DESCRIPTION
+An exploratory data analysis of customer loans in finance, beginning with a dataset, cleaning it with a variety of bespoke classes and functions, then using that cleaned data to perform data analysis.
 
 # Installation Instructions
 To install, simply pull this repo.
 # Usage Instructions
-TODO: DESCRIBE HOW.
+Use as you will. Good luck though.
 # File Structure of the Project
 .
 ├── build                   # Compiled files (alternatively `dist`)
