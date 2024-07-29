@@ -156,7 +156,7 @@ class DataTransform: #MOVED
         '''
         pass
 
-    def excess_symbol_removal(self, df, symbols): #MOVED
+    def excess_symbol_removal(self, df, symbols, display = False): #MOVED
         '''
         When called, will remove any symbols which
         are not deemed necessary for our EDA goals.
@@ -165,12 +165,12 @@ class DataTransform: #MOVED
         to be removed.
         '''
         #symbols = str(input('separate by spaces which columns are to be dropped: ')).split()
-        print('These are the symbols that will be dropped: ',symbols)
+        if display == True: print('These are the symbols that will be dropped: ',symbols)
         df = df.drop(labels=symbols, axis=1, )
         remaining_symbols = []
         for i in df:
             remaining_symbols.append(i)
-        print('These are the remaining symbols: ', remaining_symbols)
+        if display == True: print('These are the remaining symbols: ', remaining_symbols)
         return df
     
     def to_categorical(self, df, list_of_to_categorical): #MOVED
@@ -211,7 +211,7 @@ class DataTransform: #MOVED
         Converts dates to the proper format
         '''
         for i in dates_to_convert:
-            df[i] = pd.to_datetime(df[i])
+            df[i] = pd.to_datetime(df[i], format="%b-%Y")
         return df
 
     
@@ -256,37 +256,37 @@ class DataFrameInfo: #MOVED
         '''
         pass
     
-    def describe_all_columns_to_check_their_datatypes(self, df): #MOVED
+    def describe_all_columns_to_check_their_datatypes(self, df, display = False): #MOVED
         '''
         Describe all columns in the DataFrame to check their data types
         '''
-        print(df.dtypes)
+        if display == True: print(df.dtypes)
         return df
     
-    def extract_statistical_values_median_stddev_mean_from_cols_and_dataframe(self, df): #MOVED
+    def extract_statistical_values_median_stddev_mean_from_cols_and_dataframe(self, df, display = False): #MOVED
         '''
         Extract statistical values: median, standard deviation and mean from the columns and the DataFrame
         '''
-        print(df.describe()) # gives everything but the median.
-        print('Medians for each column: \n')
-        print(df.median(numeric_only=True))
+        if display == True: print(df.describe()) # gives everything but the median.
+        if display == True: print('Medians for each column: \n')
+        if display == True: print(df.median(numeric_only=True))
         return df
     
-    def count_distinct_values_in_categorical_columns(self, df): #MOVED
+    def count_distinct_values_in_categorical_columns(self, df, display = False): #MOVED
         '''
         Count distinct values in categorical columns
         '''
-        print(df.nunique())
+        if display == True: print(df.nunique())
         return df
     
-    def print_out_the_shape_of_the_dataframe(self, df): #MOVED
+    def print_out_the_shape_of_the_dataframe(self, df, display = False): #MOVED
         '''
         Print out the shape of the DataFrame
         '''
-        print(df.shape)
+        if display == True: print(df.shape)
         return df
     
-    def generate_a_count_slash_percentage_count_of_NULL_values_in_each_column(self, df): #MOVED
+    def generate_a_count_slash_percentage_count_of_NULL_values_in_each_column(self, df, display = False): #MOVED
         '''
         Generate a count/percentage count of NULL values in each column
         '''
@@ -294,7 +294,7 @@ class DataFrameInfo: #MOVED
             non_null_count = df[i].count()
             total_count = df.shape[0]
             percentage_non_null = (non_null_count / total_count) * 100
-            print(i, ': Non-nulls:', non_null_count, 'Non-Null Percentage:', percentage_non_null, '%')
+            if display == True: print(i, ': Non-nulls:', non_null_count, 'Non-Null Percentage:', percentage_non_null, '%')
             #determine a percentage of nulls that is acceptable
             #if non-nulls < 80% of total dataset, drop column
             #if (((df[i].isnull().count())/(df.shape[0]))*100) < 80:
@@ -311,7 +311,7 @@ class DataFrameInfo: #MOVED
     '''
 
 
-def amount_of_nulls_and_column_drop(df): #HAS BEEN MOVED TO functions.py 13-04-2024-15:00
+def amount_of_nulls_and_column_drop(df, display = False): #HAS BEEN MOVED TO functions.py 13-04-2024-15:00
     '''
     This function prints out the column names
     and the percentage of non-nulls in that column.
@@ -323,9 +323,9 @@ def amount_of_nulls_and_column_drop(df): #HAS BEEN MOVED TO functions.py 13-04-2
         non_null_count = df[i].count()
         total_count = df.shape[0]
         percentage_non_null = (non_null_count / total_count) * 100
-        print(i, ': Non-nulls:', non_null_count, 'Non-Null Percentage:', percentage_non_null, '%')
+        if display == True: print(i, ': Non-nulls:', non_null_count, 'Non-Null Percentage:', percentage_non_null, '%')
         if percentage_non_null < 80: # If non-nulls < 80% of total dataset, drop column
-            print(f"Dropping column '{i}' with non-null percentage {percentage_non_null:.2f}%")
+            if display == True: print(f"Dropping column '{i}' with non-null percentage {percentage_non_null:.2f}%")
             df.drop(i, axis=1, inplace=True)
     return df
 
@@ -333,7 +333,19 @@ def amount_of_nulls_and_column_drop(df): #HAS BEEN MOVED TO functions.py 13-04-2
 class DataFrameTransform: #COPIED/PASTED
     '''
     This class imputes data where necessary
-    and removes rows where necessary. 
+    and removes rows where necessary.
+    
+    
+    LIST OF AVAILABLE TRANSFORMATIONS
+    #df['instalment'] = np.log(df['instalment'])
+    #df['instalment'] = boxcox(df['instalment'])[0]
+    #df['instalment'] = np.sqrt(df['instalment'])
+    #df['instalment'] = np.cbrt(df['instalment'])
+    #df['instalment'] = yeojohnson(df['instalment'])[0]
+    
+    
+    
+    
     '''
     def __init__(self):
         '''DOCSTRING'''
@@ -463,11 +475,11 @@ class Plotter: #COPIED/PASTED
         msno.matrix(df)
         return df
     
-    def skew_correction(self, df):
+    def skew_correction(self, df, display = False):
         list_for_skew = ['loan_amount', 'funded_amount', 'funded_amount_inv', 'instalment', 'open_accounts', 'total_accounts','out_prncp','out_prncp_inv', 'total_payment', 'total_payment_inv', 'total_rec_prncp', 'total_rec_int', 'last_payment_amount']
         for i in list_for_skew:
-            print(i)
-            print(skew(df[i]))
+            if display == True: print(i)
+            if display == True: print(skew(df[i]))
 
         for column in list_for_skew: 
            df[column], _ = yeojohnson(df[column])
