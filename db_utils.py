@@ -381,7 +381,8 @@ class DataFrameTransform: #COPIED/PASTED
         for i in df[(columns)]:
             upper_limit = df[i].mean() + 3*df[i].std()
             lower_limit = df[i].mean() - 3*df[i].std()
-            
+            #print(upper_limit, ' ', i) i is the column
+            #print(lower_limit, ' ', i)
             #the before
             df_z_score_vid_capping.loc[df_z_score_vid_capping[i]>upper_limit, i] = upper_limit
             df_z_score_vid_capping.loc[df_z_score_vid_capping[i]<lower_limit, i] = lower_limit
